@@ -74,6 +74,11 @@ export default function RestaurantPage({ params }: { params: { id: string } }) {
           radius: 20,
         });
 
+        // Filter out the current restaurant from the nearby list
+        const filteredNearby = restaurantsNearBy.content.filter(
+          (r: RestaurantSummary) => r.id !== restaurant.id
+        );
+
         setRestaurantsNear(restaurantsNearBy.content);
 
         if (restaurant.reviews) {

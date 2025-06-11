@@ -42,11 +42,11 @@ export async function GET(req: NextRequest) {
   // Pagination
   const page = Number(searchParams.get("page")) || 0;
   const size = Number(searchParams.get("size")) || 10;
-  console.log(`Page: ${page}, Size: ${size}`);
+  
   const totalElements = restaurants.length;
   const totalPages = Math.ceil(totalElements / size);
   const paged = restaurants.slice(page * size, (page + 1) * size);
-  console.log("Paged restaurants:", paged);
+  
 
   return NextResponse.json({
     content: paged.map((r: any) => ({
