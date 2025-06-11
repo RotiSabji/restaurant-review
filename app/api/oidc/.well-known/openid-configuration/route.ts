@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const BASE_URL = process.env.OIDC_BASE_URL || "http://localhost:3000";
+const BASE_URL = process.env.OIDC_BASE_URL || "https://restaurant-review-eta.vercel.app";
 
 export async function GET() {
   return NextResponse.json({
