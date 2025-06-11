@@ -1,0 +1,642 @@
+[
+  {
+    "id": "1",
+    "name": "The Golden Dragon",
+    "cuisineType": "Chinese",
+    "contactInformation": "+44 20 7123 4567",
+    "address": {
+      "streetNumber": "12",
+      "streetName": "Gerrard Street",
+      "unit": "",
+      "city": "London",
+      "state": "Greater London",
+      "postalCode": "W1D 5PR",
+      "country": "United Kingdom"
+    },
+    "operatingHours": {
+      "monday": {
+        "openTime": "11:30",
+        "closeTime": "23:00"
+      },
+      "tuesday": {
+        "openTime": "11:30",
+        "closeTime": "23:00"
+      },
+      "wednesday": {
+        "openTime": "11:30",
+        "closeTime": "23:00"
+      },
+      "thursday": {
+        "openTime": "11:30",
+        "closeTime": "23:00"
+      },
+      "friday": {
+        "openTime": "11:30",
+        "closeTime": "23:30"
+      },
+      "saturday": {
+        "openTime": "11:30",
+        "closeTime": "23:30"
+      },
+      "sunday": {
+        "openTime": "11:30",
+        "closeTime": "23:30"
+      }
+    },
+    "photoIds": [
+      "/uploads/golden-dragon.png"
+    ],
+    "photos": [
+      {
+        "id": "golden-dragon.png",
+        "url": "/uploads/golden-dragon.png",
+        "createdAt": "2023-10-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z"
+      }
+    ],
+    "reviews": [
+      "r1-1",
+      "r1-2",
+      "r1-3"
+    ],
+    "averageRating": 4.67,
+    "totalReviews": 3,
+    "geoLocation": { "latitude": 51.511, "longitude": -0.131 }
+  },
+  {
+    "id": "2",
+    "name": "La Petite Maison",
+    "cuisineType": "French",
+    "contactInformation": "+44 20 7234 5678",
+    "address": {
+      "streetNumber": "54",
+      "streetName": "Brook Street",
+      "unit": "",
+      "city": "London",
+      "state": "Greater London",
+      "postalCode": "W1K 4HR",
+      "country": "United Kingdom"
+    },
+    "operatingHours": {
+      "monday": {
+        "openTime": "12:00",
+        "closeTime": "22:30"
+      },
+      "tuesday": {
+        "openTime": "12:00",
+        "closeTime": "22:30"
+      },
+      "wednesday": {
+        "openTime": "12:00",
+        "closeTime": "22:30"
+      },
+      "thursday": {
+        "openTime": "12:00",
+        "closeTime": "22:30"
+      },
+      "friday": {
+        "openTime": "12:00",
+        "closeTime": "23:00"
+      },
+      "saturday": {
+        "openTime": "12:00",
+        "closeTime": "23:00"
+      },
+      "sunday": {
+        "openTime": "12:00",
+        "closeTime": "23:00"
+      }
+    },
+    "photoIds": [
+      "/uploads/la-petit-maison.png"
+    ],
+    "photos": [
+      {
+        "id": "la-petit-maison.png",
+        "url": "/uploads/la-petit-maison.png",
+        "createdAt": "2023-10-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z"
+      }
+    ],
+    "reviews": [
+      "r2-1",
+      "r2-2",
+      "r2-3"
+    ],
+    "averageRating": 1.0,
+    "totalReviews": 3,
+    "geoLocation": { "latitude": 51.513, "longitude": -0.149 }
+  },
+  {
+    "id": "3",
+    "name": "Raj Pavilion",
+    "cuisineType": "Indian",
+    "contactInformation": "+44 20 7345 6789",
+    "address": {
+      "streetNumber": "27",
+      "streetName": "Brick Lane",
+      "unit": "",
+      "city": "London",
+      "state": "Greater London",
+      "postalCode": "E1 6PU",
+      "country": "United Kingdom"
+    },
+    "operatingHours": {
+      "monday": {
+        "openTime": "12:00",
+        "closeTime": "23:00"
+      },
+      "tuesday": {
+        "openTime": "12:00",
+        "closeTime": "23:00"
+      },
+      "wednesday": {
+        "openTime": "12:00",
+        "closeTime": "23:00"
+      },
+      "thursday": {
+        "openTime": "12:00",
+        "closeTime": "23:00"
+      },
+      "friday": {
+        "openTime": "12:00",
+        "closeTime": "23:30"
+      },
+      "saturday": {
+        "openTime": "12:00",
+        "closeTime": "23:30"
+      },
+      "sunday": {
+        "openTime": "12:00",
+        "closeTime": "23:30"
+      }
+    },
+    "photoIds": [
+      "/uploads/raj-pavilion.png"
+    ],
+    "photos": [
+      {
+        "id": "raj-pavilion.png",
+        "url": "/uploads/raj-pavilion.png",
+        "createdAt": "2023-10-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z"
+      }
+    ],
+    "reviews": [
+      "r3-1",
+      "r3-2",
+      "r3-3"
+    ],
+    "averageRating": 1.67,
+    "totalReviews": 3,
+    "geoLocation": { "latitude": 51.520, "longitude": -0.071 }
+  },
+  {
+    "id": "4",
+    "name": "Sushi Master",
+    "cuisineType": "Japanese",
+    "contactInformation": "+44 20 7456 7890",
+    "address": {
+      "streetNumber": "8",
+      "streetName": "Poland Street",
+      "unit": "",
+      "city": "London",
+      "state": "Greater London",
+      "postalCode": "W1F 8PR",
+      "country": "United Kingdom"
+    },
+    "operatingHours": {
+      "monday": {
+        "openTime": "11:30",
+        "closeTime": "22:00"
+      },
+      "tuesday": {
+        "openTime": "11:30",
+        "closeTime": "22:00"
+      },
+      "wednesday": {
+        "openTime": "11:30",
+        "closeTime": "22:00"
+      },
+      "thursday": {
+        "openTime": "11:30",
+        "closeTime": "22:00"
+      },
+      "friday": {
+        "openTime": "11:30",
+        "closeTime": "22:30"
+      },
+      "saturday": {
+        "openTime": "11:30",
+        "closeTime": "22:30"
+      },
+      "sunday": {
+        "openTime": "11:30",
+        "closeTime": "22:30"
+      }
+    },
+    "photoIds": [
+      "/uploads/sushi-master.png"
+    ],
+    "photos": [
+      {
+        "id": "sushi-master.png",
+        "url": "/uploads/sushi-master.png",
+        "createdAt": "2023-10-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z"
+      }
+    ],
+    "reviews": [
+      "r4-1",
+      "r4-2",
+      "r4-3"
+    ],
+    "averageRating": 3.67,
+    "totalReviews": 3,
+    "geoLocation": { "latitude": 51.515, "longitude": -0.137 }
+  },
+  {
+    "id": "5",
+    "name": "The Rustic Olive",
+    "cuisineType": "Italian",
+    "contactInformation": "+44 20 7567 8901",
+    "address": {
+      "streetNumber": "92",
+      "streetName": "Dean Street",
+      "unit": "",
+      "city": "London",
+      "state": "Greater London",
+      "postalCode": "W1D 3SR",
+      "country": "United Kingdom"
+    },
+    "operatingHours": {
+      "monday": {
+        "openTime": "11:00",
+        "closeTime": "23:00"
+      },
+      "tuesday": {
+        "openTime": "11:00",
+        "closeTime": "23:00"
+      },
+      "wednesday": {
+        "openTime": "11:00",
+        "closeTime": "23:00"
+      },
+      "thursday": {
+        "openTime": "11:00",
+        "closeTime": "23:00"
+      },
+      "friday": {
+        "openTime": "11:00",
+        "closeTime": "23:30"
+      },
+      "saturday": {
+        "openTime": "11:00",
+        "closeTime": "23:30"
+      },
+      "sunday": {
+        "openTime": "11:00",
+        "closeTime": "23:30"
+      }
+    },
+    "photoIds": [
+      "/uploads/rustic-olive.png"
+    ],
+    "photos": [
+      {
+        "id": "rustic-olive.png",
+        "url": "/uploads/rustic-olive.png",
+        "createdAt": "2023-10-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z"
+      }
+    ],
+    "reviews": [
+      "r5-1",
+      "r5-2",
+      "r5-3"
+    ],
+    "averageRating": 4.67,
+    "totalReviews": 3,
+    "geoLocation": { "latitude": 51.514, "longitude": -0.133 }
+  },
+  {
+    "id": "6",
+    "name": "El Toro",
+    "cuisineType": "Spanish",
+    "contactInformation": "+44 20 7678 9012",
+    "address": {
+      "streetNumber": "15",
+      "streetName": "Charlotte Street",
+      "unit": "",
+      "city": "London",
+      "state": "Greater London",
+      "postalCode": "W1T 1RH",
+      "country": "United Kingdom"
+    },
+    "operatingHours": {
+      "monday": {
+        "openTime": "12:00",
+        "closeTime": "23:00"
+      },
+      "tuesday": {
+        "openTime": "12:00",
+        "closeTime": "23:00"
+      },
+      "wednesday": {
+        "openTime": "12:00",
+        "closeTime": "23:00"
+      },
+      "thursday": {
+        "openTime": "12:00",
+        "closeTime": "23:00"
+      },
+      "friday": {
+        "openTime": "12:00",
+        "closeTime": "23:30"
+      },
+      "saturday": {
+        "openTime": "12:00",
+        "closeTime": "23:30"
+      },
+      "sunday": {
+        "openTime": "12:00",
+        "closeTime": "23:30"
+      }
+    },
+    "photoIds": [
+      "/uploads/el-toro.png"
+    ],
+    "photos": [
+      {
+        "id": "el-toro.png",
+        "url": "/uploads/el-toro.png",
+        "createdAt": "2023-10-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z"
+      }
+    ],
+    "reviews": [
+      "r6-1",
+      "r6-2",
+      "r6-3"
+    ],
+    "averageRating": 1.33,
+    "totalReviews": 3,
+    "geoLocation": { "latitude": 51.520, "longitude": -0.138 }
+  },
+  {
+    "id": "7",
+    "name": "The Greek House",
+    "cuisineType": "Greek",
+    "contactInformation": "+44 20 7789 0123",
+    "address": {
+      "streetNumber": "32",
+      "streetName": "Store Street",
+      "unit": "",
+      "city": "London",
+      "state": "Greater London",
+      "postalCode": "WC1E 7BS",
+      "country": "United Kingdom"
+    },
+    "operatingHours": {
+      "monday": {
+        "openTime": "12:00",
+        "closeTime": "22:30"
+      },
+      "tuesday": {
+        "openTime": "12:00",
+        "closeTime": "22:30"
+      },
+      "wednesday": {
+        "openTime": "12:00",
+        "closeTime": "22:30"
+      },
+      "thursday": {
+        "openTime": "12:00",
+        "closeTime": "22:30"
+      },
+      "friday": {
+        "openTime": "12:00",
+        "closeTime": "23:00"
+      },
+      "saturday": {
+        "openTime": "12:00",
+        "closeTime": "23:00"
+      },
+      "sunday": {
+        "openTime": "12:00",
+        "closeTime": "23:00"
+      }
+    },
+    "photoIds": [
+      "/uploads/greek-house.png"
+    ],
+    "photos": [
+      {
+        "id": "greek-house.png",
+        "url": "/uploads/greek-house.png",
+        "createdAt": "2023-10-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z"
+      }
+    ],
+    "reviews": [
+      "r7-1",
+      "r7-2",
+      "r7-3"
+    ],
+    "averageRating": 4.67,
+    "totalReviews": 3,
+    "geoLocation": { "latitude": 51.521, "longitude": -0.134 }
+  },
+  {
+    "id": "8",
+    "name": "Seoul Kitchen",
+    "cuisineType": "Korean",
+    "contactInformation": "+44 20 7890 1234",
+    "address": {
+      "streetNumber": "71",
+      "streetName": "St John Street",
+      "unit": "",
+      "city": "London",
+      "state": "Greater London",
+      "postalCode": "EC1M 4AN",
+      "country": "United Kingdom"
+    },
+    "operatingHours": {
+      "monday": {
+        "openTime": "11:30",
+        "closeTime": "22:00"
+      },
+      "tuesday": {
+        "openTime": "11:30",
+        "closeTime": "22:00"
+      },
+      "wednesday": {
+        "openTime": "11:30",
+        "closeTime": "22:00"
+      },
+      "thursday": {
+        "openTime": "11:30",
+        "closeTime": "22:00"
+      },
+      "friday": {
+        "openTime": "11:30",
+        "closeTime": "22:30"
+      },
+      "saturday": {
+        "openTime": "11:30",
+        "closeTime": "22:30"
+      },
+      "sunday": {
+        "openTime": "11:30",
+        "closeTime": "22:30"
+      }
+    },
+    "photoIds": [
+      "/uploads/seoul-kitchen.png"
+    ],
+    "photos": [
+      {
+        "id": "seoul-kitchen.png",
+        "url": "/uploads/seoul-kitchen.png",
+        "createdAt": "2023-10-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z"
+      }
+    ],
+    "reviews": [
+      "r8-1",
+      "r8-2",
+      "r8-3"
+    ],
+    "averageRating": 4.67,
+    "totalReviews": 3,
+    "geoLocation": { "latitude": 51.522, "longitude": -0.104 }
+  },
+  {
+    "id": "9",
+    "name": "Thai Orchid",
+    "cuisineType": "Thai",
+    "contactInformation": "+44 20 7901 2345",
+    "address": {
+      "streetNumber": "45",
+      "streetName": "Warren Street",
+      "unit": "",
+      "city": "London",
+      "state": "Greater London",
+      "postalCode": "W1T 6AD",
+      "country": "United Kingdom"
+    },
+    "operatingHours": {
+      "monday": {
+        "openTime": "11:00",
+        "closeTime": "22:30"
+      },
+      "tuesday": {
+        "openTime": "11:00",
+        "closeTime": "22:30"
+      },
+      "wednesday": {
+        "openTime": "11:00",
+        "closeTime": "22:30"
+      },
+      "thursday": {
+        "openTime": "11:00",
+        "closeTime": "22:30"
+      },
+      "friday": {
+        "openTime": "11:00",
+        "closeTime": "23:00"
+      },
+      "saturday": {
+        "openTime": "11:00",
+        "closeTime": "23:00"
+      },
+      "sunday": {
+        "openTime": "11:00",
+        "closeTime": "23:00"
+      }
+    },
+    "photoIds": [
+      "/uploads/thai-orchid.png"
+    ],
+    "photos": [
+      {
+        "id": "thai-orchid.png",
+        "url": "/uploads/thai-orchid.png",
+        "createdAt": "2023-10-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z"
+      }
+    ],
+    "reviews": [
+      "r9-1",
+      "r9-2",
+      "r9-3"
+    ],
+    "averageRating": 4.67,
+    "totalReviews": 3,
+    "geoLocation": { "latitude": 51.524, "longitude": -0.143 }
+  },
+  {
+    "id": "10",
+    "name": "The Burger Joint",
+    "cuisineType": "American",
+    "contactInformation": "+44 20 7012 3456",
+    "address": {
+      "streetNumber": "88",
+      "streetName": "Commercial Street",
+      "unit": "",
+      "city": "London",
+      "state": "Greater London",
+      "postalCode": "E1 6LY",
+      "country": "United Kingdom"
+    },
+    "operatingHours": {
+      "monday": {
+        "openTime": "11:00",
+        "closeTime": "23:00"
+      },
+      "tuesday": {
+        "openTime": "11:00",
+        "closeTime": "23:00"
+      },
+      "wednesday": {
+        "openTime": "11:00",
+        "closeTime": "23:00"
+      },
+      "thursday": {
+        "openTime": "11:00",
+        "closeTime": "23:00"
+      },
+      "friday": {
+        "openTime": "11:00",
+        "closeTime": "23:30"
+      },
+      "saturday": {
+        "openTime": "11:00",
+        "closeTime": "23:30"
+      },
+      "sunday": {
+        "openTime": "11:00",
+        "closeTime": "23:30"
+      }
+    },
+    "photoIds": [
+      "/uploads/burger-joint.png"
+    ],
+    "photos": [
+      {
+        "id": "burger-joint.png",
+        "url": "/uploads/burger-joint.png",
+        "createdAt": "2023-10-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z"
+      }
+    ],
+    "reviews": [
+      "r10-1",
+      "r10-2",
+      "r10-3"
+    ],
+    "averageRating": 4.67,
+    "totalReviews": 3,
+    "geoLocation": { "latitude": 51.517, "longitude": -0.075 }
+  }
+]
