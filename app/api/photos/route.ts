@@ -3,8 +3,9 @@ import { promises as fs } from "fs";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 
-const PHOTOS_FILE = path.join(process.cwd(), "photos.json");
-const UPLOADS_DIR = path.join(process.cwd(), "public", "uploads");
+// All file storage should use /tmp for Vercel compatibility.
+const PHOTOS_FILE = path.join("/tmp", "photos.json");
+const UPLOADS_DIR = path.join("/tmp", "uploads");
 
 async function readPhotos() {
   try {

@@ -4,8 +4,10 @@ import path from "path";
 import bcrypt from "bcryptjs";
 import { randomBytes } from "crypto";
 
-const USERS_FILE = path.join(process.cwd(), "users.json");
-const AUTH_CODES_FILE = path.join(process.cwd(), "oidc_auth_codes.json");
+// All file storage should use /tmp for Vercel compatibility.
+const USERS_FILE = path.join("/tmp", "users.json");
+const USERS_FILE_ROOT = path.join(process.cwd(), "users.json");
+const AUTH_CODES_FILE = path.join("/tmp", "oidc_auth_codes.json");
 
 export async function GET(req: NextRequest) {
   // Parse query params for OIDC
@@ -83,6 +85,18 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  // Copy users.json from root to /tmp if not present
+  try {
+    await fs.access(USERS_FILE);
+  } catch {
+    try {
+      const data = await fs.readFile(USERS_FILE_ROOT, "utf-8");
+      await fs.writeFile(USERS_FILE, data);
+    } catch {
+      return htmlError("No users found", "", "", "", "", "", "");
+    }
+  }
+
   // Parse form data
   const form = await req.formData();
   const username = form.get("username")?.toString() || "";

@@ -3,7 +3,8 @@ import { promises as fs } from "fs";
 import path from "path";
 import bcrypt from "bcryptjs";
 
-const USERS_FILE = path.join(process.cwd(), "users.json");
+// All file storage should use /tmp for Vercel compatibility.
+const USERS_FILE = path.join("/tmp", "users.json");
 
 export async function POST(req: NextRequest) {
   const { username, password } = await req.json();

@@ -3,10 +3,23 @@ import { promises as fs } from "fs";
 import path from "path";
 import jwt from "jsonwebtoken";
 
-const REVIEWS_FILE = path.join(process.cwd(), "reviews.json");
-const JWKS_FILE = path.join(process.cwd(), "oidc_jwks.json");
+// All file storage should use /tmp for Vercel compatibility.
+const REVIEWS_FILE = path.join("/tmp", "reviews.json");
+const REVIEWS_FILE_ROOT = path.join(process.cwd(), "reviews.json");
+const JWKS_FILE = path.join("/tmp", "oidc_jwks.json");
 
 async function readReviews() {
+  // Copy reviews.json from root to /tmp if not present
+  try {
+    await fs.access(REVIEWS_FILE);
+  } catch {
+    try {
+      const data = await fs.readFile(REVIEWS_FILE_ROOT, "utf-8");
+      await fs.writeFile(REVIEWS_FILE, data);
+    } catch (e) {
+      return [];
+    }
+  }
   try {
     const data = await fs.readFile(REVIEWS_FILE, "utf-8");
     return JSON.parse(data);
@@ -16,6 +29,17 @@ async function readReviews() {
 }
 
 async function writeReviews(reviews: any[]) {
+  // Copy reviews.json from root to /tmp if not present
+  try {
+    await fs.access(REVIEWS_FILE);
+  } catch {
+    try {
+      const data = await fs.readFile(REVIEWS_FILE_ROOT, "utf-8");
+      await fs.writeFile(REVIEWS_FILE, data);
+    } catch (e) {
+      // If root is missing, just continue to write
+    }
+  }
   await fs.writeFile(REVIEWS_FILE, JSON.stringify(reviews, null, 2));
 }
 

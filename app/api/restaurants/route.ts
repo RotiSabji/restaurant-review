@@ -4,9 +4,23 @@ import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { RestaurantSummary } from "@/domain/domain";
 
-const RESTAURANTS_FILE = path.join(process.cwd(), "restaurants.json");
+// All file storage should use /tmp for Vercel compatibility.
+const RESTAURANTS_FILE = path.join("/tmp", "restaurants.json");
+const RESTAURANTS_FILE_ROOT = path.join(process.cwd(), "restaurants.json");
 
 async function readRestaurants() {
+  // Copy restaurants.json from root to /tmp if not present
+  try {
+    await fs.access(RESTAURANTS_FILE);
+  } catch {
+    try {
+      const data = await fs.readFile(RESTAURANTS_FILE_ROOT, "utf-8");
+      await fs.writeFile(RESTAURANTS_FILE, data);
+    } catch (e) {
+      console.error("Error copying restaurants file:", e);
+      return [];
+    }
+  }
   try {
     const data = await fs.readFile(RESTAURANTS_FILE, "utf-8");
     return JSON.parse(data);
@@ -17,6 +31,17 @@ async function readRestaurants() {
 }
 
 async function writeRestaurants(restaurants: any[]) {
+  // Copy restaurants.json from root to /tmp if not present
+  try {
+    await fs.access(RESTAURANTS_FILE);
+  } catch {
+    try {
+      const data = await fs.readFile(RESTAURANTS_FILE_ROOT, "utf-8");
+      await fs.writeFile(RESTAURANTS_FILE, data);
+    } catch (e) {
+      // If root is missing, just continue to write
+    }
+  }
   await fs.writeFile(RESTAURANTS_FILE, JSON.stringify(restaurants, null, 2));
 }
 
@@ -42,11 +67,11 @@ export async function GET(req: NextRequest) {
   // Pagination
   const page = Number(searchParams.get("page")) || 0;
   const size = Number(searchParams.get("size")) || 10;
-  console.log(`Page: ${page}, Size: ${size}`);
+  
   const totalElements = restaurants.length;
   const totalPages = Math.ceil(totalElements / size);
   const paged = restaurants.slice(page * size, (page + 1) * size);
-  console.log("Paged restaurants:", paged);
+  
 
   return NextResponse.json({
     content: paged.map((r: any) => ({

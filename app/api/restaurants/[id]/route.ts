@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 
-const RESTAURANTS_FILE = path.join(process.cwd(), "restaurants.json");
+// All file storage should use /tmp for Vercel compatibility.
+
+const RESTAURANTS_FILE = path.join("/tmp", "restaurants.json");
 
 async function readRestaurants() {
   try {

@@ -73,8 +73,12 @@ export default function RestaurantPage({ params }: { params: { id: string } }) {
           longitude: restaurant.geoLocation?.longitude,
           radius: 20,
         });
+        // Filter out the current restaurant from the nearby list
+const filteredNearby = restaurantsNearBy.content.filter(
+  (r: RestaurantSummary) => r.id !== restaurant.id
+);
 
-        setRestaurantsNear(restaurantsNearBy.content);
+        setRestaurantsNear(filteredNearby);
 
         if (restaurant.reviews) {
           setReviews(restaurant.reviews);

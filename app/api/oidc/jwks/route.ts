@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
-const JWKS_FILE = path.join(process.cwd(), "oidc_jwks.json");
+// All file storage should use /tmp for Vercel compatibility.
+const JWKS_FILE = path.join("/tmp", "oidc_jwks.json");
 
 export async function GET() {
   // For demo: generate a static keypair and store in oidc_jwks.json if not present or invalid

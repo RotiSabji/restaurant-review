@@ -3,7 +3,7 @@
 const fs = require('fs');
 const { generateKeyPairSync } = require('crypto');
 
-const JWKS_FILE = './oidc_jwks.json';
+const JWKS_FILE = '/tmp/oidc_jwks.json';
 
 const { publicKey, privateKey } = generateKeyPairSync('rsa', {
   modulusLength: 2048,

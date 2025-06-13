@@ -3,11 +3,26 @@ import jwt from "jsonwebtoken";
 import path from "path";
 import { promises as fs } from "fs";
 
-const USERS_FILE = path.join(process.cwd(), "users.json");
+// All file storage should use /tmp for Vercel compatibility.
+
+const USERS_FILE = path.join("/tmp", "users.json");
+const USERS_FILE_ROOT = path.join(process.cwd(), "users.json");
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key";
-const JWKS_FILE = path.join(process.cwd(), "oidc_jwks.json");
+const JWKS_FILE = path.join("/tmp", "oidc_jwks.json");
 
 export async function GET(req: NextRequest) {
+  // Copy users.json from root to /tmp if not present
+  try {
+    await fs.access(USERS_FILE);
+  } catch {
+    try {
+      const data = await fs.readFile(USERS_FILE_ROOT, "utf-8");
+      await fs.writeFile(USERS_FILE, data);
+    } catch {
+      return NextResponse.json({ error: "No users found" }, { status: 401 });
+    }
+  }
+
   const authHeader = req.headers.get("authorization");
   if (!authHeader) {
     return NextResponse.json({ error: "No token" }, { status: 401 });

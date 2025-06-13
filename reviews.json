@@ -54,11 +54,20 @@
     "restaurantId": "1",
     "content": "Amazing dim sum, will come again!",
     "rating": 5,
-    "photoIds": ["/uploads/golden-dragon.png"],
-    "writtenBy": { "id": "alice", "username": "alice" },
+    "photoIds": [
+      "/uploads/golden-dragon.png"
+    ],
+    "writtenBy": {
+      "id": "alice",
+      "username": "alice"
+    },
     "datePosted": "2025-06-11T10:00:00.000Z",
     "photos": [
-      { "id": "/uploads/golden-dragon.png", "url": "/uploads/golden-dragon.png", "datecreated": "2025-06-11T10:00:00.000Z" }
+      {
+        "id": "/uploads/golden-dragon.png",
+        "url": "/uploads/golden-dragon.png",
+        "datecreated": "2025-06-11T10:00:00.000Z"
+      }
     ]
   },
   {
@@ -66,11 +75,20 @@
     "restaurantId": "1",
     "content": "Great service and tasty noodles.",
     "rating": 4,
-    "photoIds": ["/uploads/golden-dragon.png"],
-    "writtenBy": { "id": "bob", "username": "bob" },
+    "photoIds": [
+      "/uploads/golden-dragon.png"
+    ],
+    "writtenBy": {
+      "id": "bob",
+      "username": "bob"
+    },
     "datePosted": "2025-06-11T11:00:00.000Z",
     "photos": [
-      { "id": "/uploads/golden-dragon.png", "url": "/uploads/golden-dragon.png", "datecreated": "2025-06-11T11:00:00.000Z" }
+      {
+        "id": "/uploads/golden-dragon.png",
+        "url": "/uploads/golden-dragon.png",
+        "datecreated": "2025-06-11T11:00:00.000Z"
+      }
     ]
   },
   {
@@ -78,11 +96,20 @@
     "restaurantId": "1",
     "content": "Loved the atmosphere!",
     "rating": 5,
-    "photoIds": ["/uploads/golden-dragon.png"],
-    "writtenBy": { "id": "carol", "username": "carol" },
+    "photoIds": [
+      "/uploads/golden-dragon.png"
+    ],
+    "writtenBy": {
+      "id": "carol",
+      "username": "carol"
+    },
     "datePosted": "2025-06-11T12:00:00.000Z",
     "photos": [
-      { "id": "/uploads/golden-dragon.png", "url": "/uploads/golden-dragon.png", "datecreated": "2025-06-11T12:00:00.000Z" }
+      {
+        "id": "/uploads/golden-dragon.png",
+        "url": "/uploads/golden-dragon.png",
+        "datecreated": "2025-06-11T12:00:00.000Z"
+      }
     ]
   },
   {
@@ -90,11 +117,20 @@
     "restaurantId": "2",
     "content": "Will not recommend",
     "rating": 1,
-    "photoIds": ["/uploads/la-petit-maison.png"],
-    "writtenBy": { "id": "dave", "username": "dave" },
+    "photoIds": [
+      "/uploads/la-petit-maison.png"
+    ],
+    "writtenBy": {
+      "id": "dave",
+      "username": "dave"
+    },
     "datePosted": "2025-06-11T10:30:00.000Z",
     "photos": [
-      { "id": "/uploads/la-petit-maison.png", "url": "/uploads/la-petit-maison.png", "datecreated": "2025-06-11T10:30:00.000Z" }
+      {
+        "id": "/uploads/la-petit-maison.png",
+        "url": "/uploads/la-petit-maison.png",
+        "datecreated": "2025-06-11T10:30:00.000Z"
+      }
     ]
   },
   {
@@ -102,35 +138,63 @@
     "restaurantId": "2",
     "content": "not good, service was bad",
     "rating": 1,
-    "photoIds": ["/uploads/la-petit-maison.png"],
-    "writtenBy": { "id": "eve", "username": "eve" },
+    "photoIds": [
+      "/uploads/la-petit-maison.png"
+    ],
+    "writtenBy": {
+      "id": "eve",
+      "username": "eve"
+    },
     "datePosted": "2025-06-11T11:30:00.000Z",
     "photos": [
-      { "id": "/uploads/la-petit-maison.png", "url": "/uploads/la-petit-maison.png", "datecreated": "2025-06-11T11:30:00.000Z" }
+      {
+        "id": "/uploads/la-petit-maison.png",
+        "url": "/uploads/la-petit-maison.png",
+        "datecreated": "2025-06-11T11:30:00.000Z"
+      }
     ]
   },
   {
     "id": "r2-3",
     "restaurantId": "2",
-    "content": "bad experiece",
-    "rating": 1,
-    "photoIds": ["/uploads/la-petit-maison.png"],
-    "writtenBy": { "id": "sanjeet", "username": "sanjeet" },
+    "content": "good experiece",
+    "rating": 5,
+    "photoIds": [
+      "/uploads/la-petit-maison.png"
+    ],
+    "writtenBy": {
+      "id": "sanjeet",
+      "username": "sanjeet"
+    },
     "datePosted": "2025-06-11T13:23:06.202Z",
     "photos": [
-      { "id": "/uploads/la-petit-maison.png", "url": "/uploads/la-petit-maison.png", "datecreated": "2025-06-11T13:23:06.202Z" }
-    ]
+      {
+        "id": "/uploads/la-petit-maison.png",
+        "url": "/uploads/la-petit-maison.png",
+        "datecreated": "2025-06-11T13:23:06.202Z"
+      }
+    ],
+    "lastEdited": "2025-06-11T20:01:45.644Z"
   },
   {
     "id": "r3-1",
     "restaurantId": "3",
     "content": "Food was bland and overpriced.",
     "rating": 2,
-    "photoIds": ["/uploads/raj-pavilion.png"],
-    "writtenBy": { "id": "frank", "username": "frank" },
+    "photoIds": [
+      "/uploads/raj-pavilion.png"
+    ],
+    "writtenBy": {
+      "id": "frank",
+      "username": "frank"
+    },
     "datePosted": "2025-06-11T10:45:00.000Z",
     "photos": [
-      { "id": "/uploads/raj-pavilion.png", "url": "/uploads/raj-pavilion.png", "datecreated": "2025-06-11T10:45:00.000Z" }
+      {
+        "id": "/uploads/raj-pavilion.png",
+        "url": "/uploads/raj-pavilion.png",
+        "datecreated": "2025-06-11T10:45:00.000Z"
+      }
     ]
   },
   {
@@ -138,11 +202,20 @@
     "restaurantId": "3",
     "content": "Service was slow and staff were rude.",
     "rating": 1,
-    "photoIds": ["/uploads/raj-pavilion.png"],
-    "writtenBy": { "id": "grace", "username": "grace" },
+    "photoIds": [
+      "/uploads/raj-pavilion.png"
+    ],
+    "writtenBy": {
+      "id": "grace",
+      "username": "grace"
+    },
     "datePosted": "2025-06-11T11:45:00.000Z",
     "photos": [
-      { "id": "/uploads/raj-pavilion.png", "url": "/uploads/raj-pavilion.png", "datecreated": "2025-06-11T11:45:00.000Z" }
+      {
+        "id": "/uploads/raj-pavilion.png",
+        "url": "/uploads/raj-pavilion.png",
+        "datecreated": "2025-06-11T11:45:00.000Z"
+      }
     ]
   },
   {
@@ -150,11 +223,20 @@
     "restaurantId": "3",
     "content": "Not worth the hype.",
     "rating": 2,
-    "photoIds": ["/uploads/raj-pavilion.png"],
-    "writtenBy": { "id": "heidi", "username": "heidi" },
+    "photoIds": [
+      "/uploads/raj-pavilion.png"
+    ],
+    "writtenBy": {
+      "id": "heidi",
+      "username": "heidi"
+    },
     "datePosted": "2025-06-11T12:45:00.000Z",
     "photos": [
-      { "id": "/uploads/raj-pavilion.png", "url": "/uploads/raj-pavilion.png", "datecreated": "2025-06-11T12:45:00.000Z" }
+      {
+        "id": "/uploads/raj-pavilion.png",
+        "url": "/uploads/raj-pavilion.png",
+        "datecreated": "2025-06-11T12:45:00.000Z"
+      }
     ]
   },
   {
@@ -162,11 +244,20 @@
     "restaurantId": "4",
     "content": "Fresh sushi and great presentation.",
     "rating": 5,
-    "photoIds": ["/uploads/sushi-master.png"],
-    "writtenBy": { "id": "ivan", "username": "ivan" },
+    "photoIds": [
+      "/uploads/sushi-master.png"
+    ],
+    "writtenBy": {
+      "id": "ivan",
+      "username": "ivan"
+    },
     "datePosted": "2025-06-11T10:15:00.000Z",
     "photos": [
-      { "id": "/uploads/sushi-master.png", "url": "/uploads/sushi-master.png", "datecreated": "2025-06-11T10:15:00.000Z" }
+      {
+        "id": "/uploads/sushi-master.png",
+        "url": "/uploads/sushi-master.png",
+        "datecreated": "2025-06-11T10:15:00.000Z"
+      }
     ]
   },
   {
@@ -174,11 +265,20 @@
     "restaurantId": "4",
     "content": "Fish was not fresh, disappointed.",
     "rating": 1,
-    "photoIds": ["/uploads/sushi-master.png"],
-    "writtenBy": { "id": "judy", "username": "judy" },
+    "photoIds": [
+      "/uploads/sushi-master.png"
+    ],
+    "writtenBy": {
+      "id": "judy",
+      "username": "judy"
+    },
     "datePosted": "2025-06-11T11:15:00.000Z",
     "photos": [
-      { "id": "/uploads/sushi-master.png", "url": "/uploads/sushi-master.png", "datecreated": "2025-06-11T11:15:00.000Z" }
+      {
+        "id": "/uploads/sushi-master.png",
+        "url": "/uploads/sushi-master.png",
+        "datecreated": "2025-06-11T11:15:00.000Z"
+      }
     ]
   },
   {
@@ -186,11 +286,20 @@
     "restaurantId": "4",
     "content": "Best miso soup in London.",
     "rating": 5,
-    "photoIds": ["/uploads/sushi-master.png"],
-    "writtenBy": { "id": "kate", "username": "kate" },
+    "photoIds": [
+      "/uploads/sushi-master.png"
+    ],
+    "writtenBy": {
+      "id": "kate",
+      "username": "kate"
+    },
     "datePosted": "2025-06-11T12:15:00.000Z",
     "photos": [
-      { "id": "/uploads/sushi-master.png", "url": "/uploads/sushi-master.png", "datecreated": "2025-06-11T12:15:00.000Z" }
+      {
+        "id": "/uploads/sushi-master.png",
+        "url": "/uploads/sushi-master.png",
+        "datecreated": "2025-06-11T12:15:00.000Z"
+      }
     ]
   },
   {
@@ -198,11 +307,20 @@
     "restaurantId": "5",
     "content": "Authentic Italian pizza!",
     "rating": 5,
-    "photoIds": ["/uploads/rustic-olive.png"],
-    "writtenBy": { "id": "leo", "username": "leo" },
+    "photoIds": [
+      "/uploads/rustic-olive.png"
+    ],
+    "writtenBy": {
+      "id": "leo",
+      "username": "leo"
+    },
     "datePosted": "2025-06-11T10:20:00.000Z",
     "photos": [
-      { "id": "/uploads/rustic-olive.png", "url": "/uploads/rustic-olive.png", "datecreated": "2025-06-11T10:20:00.000Z" }
+      {
+        "id": "/uploads/rustic-olive.png",
+        "url": "/uploads/rustic-olive.png",
+        "datecreated": "2025-06-11T10:20:00.000Z"
+      }
     ]
   },
   {
@@ -210,11 +328,20 @@
     "restaurantId": "5",
     "content": "Great pasta and wine selection.",
     "rating": 4,
-    "photoIds": ["/uploads/rustic-olive.png"],
-    "writtenBy": { "id": "mia", "username": "mia" },
+    "photoIds": [
+      "/uploads/rustic-olive.png"
+    ],
+    "writtenBy": {
+      "id": "mia",
+      "username": "mia"
+    },
     "datePosted": "2025-06-11T11:20:00.000Z",
     "photos": [
-      { "id": "/uploads/rustic-olive.png", "url": "/uploads/rustic-olive.png", "datecreated": "2025-06-11T11:20:00.000Z" }
+      {
+        "id": "/uploads/rustic-olive.png",
+        "url": "/uploads/rustic-olive.png",
+        "datecreated": "2025-06-11T11:20:00.000Z"
+      }
     ]
   },
   {
@@ -222,11 +349,20 @@
     "restaurantId": "5",
     "content": "Cozy place, friendly staff.",
     "rating": 5,
-    "photoIds": ["/uploads/rustic-olive.png"],
-    "writtenBy": { "id": "nina", "username": "nina" },
+    "photoIds": [
+      "/uploads/rustic-olive.png"
+    ],
+    "writtenBy": {
+      "id": "nina",
+      "username": "nina"
+    },
     "datePosted": "2025-06-11T12:20:00.000Z",
     "photos": [
-      { "id": "/uploads/rustic-olive.png", "url": "/uploads/rustic-olive.png", "datecreated": "2025-06-11T12:20:00.000Z" }
+      {
+        "id": "/uploads/rustic-olive.png",
+        "url": "/uploads/rustic-olive.png",
+        "datecreated": "2025-06-11T12:20:00.000Z"
+      }
     ]
   },
   {
@@ -234,11 +370,20 @@
     "restaurantId": "6",
     "content": "Food was cold and tasteless.",
     "rating": 1,
-    "photoIds": ["/uploads/el-toro.png"],
-    "writtenBy": { "id": "oliver", "username": "oliver" },
+    "photoIds": [
+      "/uploads/el-toro.png"
+    ],
+    "writtenBy": {
+      "id": "oliver",
+      "username": "oliver"
+    },
     "datePosted": "2025-06-11T10:25:00.000Z",
     "photos": [
-      { "id": "/uploads/el-toro.png", "url": "/uploads/el-toro.png", "datecreated": "2025-06-11T10:25:00.000Z" }
+      {
+        "id": "/uploads/el-toro.png",
+        "url": "/uploads/el-toro.png",
+        "datecreated": "2025-06-11T10:25:00.000Z"
+      }
     ]
   },
   {
@@ -246,11 +391,20 @@
     "restaurantId": "6",
     "content": "Waited an hour for food.",
     "rating": 1,
-    "photoIds": ["/uploads/el-toro.png"],
-    "writtenBy": { "id": "paul", "username": "paul" },
+    "photoIds": [
+      "/uploads/el-toro.png"
+    ],
+    "writtenBy": {
+      "id": "paul",
+      "username": "paul"
+    },
     "datePosted": "2025-06-11T11:25:00.000Z",
     "photos": [
-      { "id": "/uploads/el-toro.png", "url": "/uploads/el-toro.png", "datecreated": "2025-06-11T11:25:00.000Z" }
+      {
+        "id": "/uploads/el-toro.png",
+        "url": "/uploads/el-toro.png",
+        "datecreated": "2025-06-11T11:25:00.000Z"
+      }
     ]
   },
   {
@@ -258,11 +412,20 @@
     "restaurantId": "6",
     "content": "Staff was unfriendly.",
     "rating": 2,
-    "photoIds": ["/uploads/el-toro.png"],
-    "writtenBy": { "id": "quinn", "username": "quinn" },
+    "photoIds": [
+      "/uploads/el-toro.png"
+    ],
+    "writtenBy": {
+      "id": "quinn",
+      "username": "quinn"
+    },
     "datePosted": "2025-06-11T12:25:00.000Z",
     "photos": [
-      { "id": "/uploads/el-toro.png", "url": "/uploads/el-toro.png", "datecreated": "2025-06-11T12:25:00.000Z" }
+      {
+        "id": "/uploads/el-toro.png",
+        "url": "/uploads/el-toro.png",
+        "datecreated": "2025-06-11T12:25:00.000Z"
+      }
     ]
   },
   {
@@ -270,11 +433,20 @@
     "restaurantId": "7",
     "content": "Authentic Greek flavors!",
     "rating": 5,
-    "photoIds": ["/uploads/greek-house.png"],
-    "writtenBy": { "id": "rachel", "username": "rachel" },
+    "photoIds": [
+      "/uploads/greek-house.png"
+    ],
+    "writtenBy": {
+      "id": "rachel",
+      "username": "rachel"
+    },
     "datePosted": "2025-06-11T10:35:00.000Z",
     "photos": [
-      { "id": "/uploads/greek-house.png", "url": "/uploads/greek-house.png", "datecreated": "2025-06-11T10:35:00.000Z" }
+      {
+        "id": "/uploads/greek-house.png",
+        "url": "/uploads/greek-house.png",
+        "datecreated": "2025-06-11T10:35:00.000Z"
+      }
     ]
   },
   {
@@ -282,11 +454,20 @@
     "restaurantId": "7",
     "content": "Loved the moussaka!",
     "rating": 4,
-    "photoIds": ["/uploads/greek-house.png"],
-    "writtenBy": { "id": "sam", "username": "sam" },
+    "photoIds": [
+      "/uploads/greek-house.png"
+    ],
+    "writtenBy": {
+      "id": "sam",
+      "username": "sam"
+    },
     "datePosted": "2025-06-11T11:35:00.000Z",
     "photos": [
-      { "id": "/uploads/greek-house.png", "url": "/uploads/greek-house.png", "datecreated": "2025-06-11T11:35:00.000Z" }
+      {
+        "id": "/uploads/greek-house.png",
+        "url": "/uploads/greek-house.png",
+        "datecreated": "2025-06-11T11:35:00.000Z"
+      }
     ]
   },
   {
@@ -294,11 +475,20 @@
     "restaurantId": "7",
     "content": "Great baklava and friendly staff.",
     "rating": 5,
-    "photoIds": ["/uploads/greek-house.png"],
-    "writtenBy": { "id": "tina", "username": "tina" },
+    "photoIds": [
+      "/uploads/greek-house.png"
+    ],
+    "writtenBy": {
+      "id": "tina",
+      "username": "tina"
+    },
     "datePosted": "2025-06-11T12:35:00.000Z",
     "photos": [
-      { "id": "/uploads/greek-house.png", "url": "/uploads/greek-house.png", "datecreated": "2025-06-11T12:35:00.000Z" }
+      {
+        "id": "/uploads/greek-house.png",
+        "url": "/uploads/greek-house.png",
+        "datecreated": "2025-06-11T12:35:00.000Z"
+      }
     ]
   },
   {
@@ -306,11 +496,20 @@
     "restaurantId": "8",
     "content": "Best Korean BBQ!",
     "rating": 5,
-    "photoIds": ["/uploads/seoul-kitchen.png"],
-    "writtenBy": { "id": "uma", "username": "uma" },
+    "photoIds": [
+      "/uploads/seoul-kitchen.png"
+    ],
+    "writtenBy": {
+      "id": "uma",
+      "username": "uma"
+    },
     "datePosted": "2025-06-11T10:40:00.000Z",
     "photos": [
-      { "id": "/uploads/seoul-kitchen.png", "url": "/uploads/seoul-kitchen.png", "datecreated": "2025-06-11T10:40:00.000Z" }
+      {
+        "id": "/uploads/seoul-kitchen.png",
+        "url": "/uploads/seoul-kitchen.png",
+        "datecreated": "2025-06-11T10:40:00.000Z"
+      }
     ]
   },
   {
@@ -318,11 +517,20 @@
     "restaurantId": "8",
     "content": "Loved the kimchi and bibimbap.",
     "rating": 4,
-    "photoIds": ["/uploads/seoul-kitchen.png"],
-    "writtenBy": { "id": "victor", "username": "victor" },
+    "photoIds": [
+      "/uploads/seoul-kitchen.png"
+    ],
+    "writtenBy": {
+      "id": "victor",
+      "username": "victor"
+    },
     "datePosted": "2025-06-11T11:40:00.000Z",
     "photos": [
-      { "id": "/uploads/seoul-kitchen.png", "url": "/uploads/seoul-kitchen.png", "datecreated": "2025-06-11T11:40:00.000Z" }
+      {
+        "id": "/uploads/seoul-kitchen.png",
+        "url": "/uploads/seoul-kitchen.png",
+        "datecreated": "2025-06-11T11:40:00.000Z"
+      }
     ]
   },
   {
@@ -330,11 +538,20 @@
     "restaurantId": "8",
     "content": "Great service and tasty food.",
     "rating": 5,
-    "photoIds": ["/uploads/seoul-kitchen.png"],
-    "writtenBy": { "id": "wendy", "username": "wendy" },
+    "photoIds": [
+      "/uploads/seoul-kitchen.png"
+    ],
+    "writtenBy": {
+      "id": "wendy",
+      "username": "wendy"
+    },
     "datePosted": "2025-06-11T12:40:00.000Z",
     "photos": [
-      { "id": "/uploads/seoul-kitchen.png", "url": "/uploads/seoul-kitchen.png", "datecreated": "2025-06-11T12:40:00.000Z" }
+      {
+        "id": "/uploads/seoul-kitchen.png",
+        "url": "/uploads/seoul-kitchen.png",
+        "datecreated": "2025-06-11T12:40:00.000Z"
+      }
     ]
   },
   {
@@ -342,11 +559,20 @@
     "restaurantId": "9",
     "content": "Delicious Thai curries!",
     "rating": 5,
-    "photoIds": ["/uploads/thai-orchid.png"],
-    "writtenBy": { "id": "xander", "username": "xander" },
+    "photoIds": [
+      "/uploads/thai-orchid.png"
+    ],
+    "writtenBy": {
+      "id": "xander",
+      "username": "xander"
+    },
     "datePosted": "2025-06-11T10:50:00.000Z",
     "photos": [
-      { "id": "/uploads/thai-orchid.png", "url": "/uploads/thai-orchid.png", "datecreated": "2025-06-11T10:50:00.000Z" }
+      {
+        "id": "/uploads/thai-orchid.png",
+        "url": "/uploads/thai-orchid.png",
+        "datecreated": "2025-06-11T10:50:00.000Z"
+      }
     ]
   },
   {
@@ -354,11 +580,20 @@
     "restaurantId": "9",
     "content": "Great pad thai and spring rolls.",
     "rating": 4,
-    "photoIds": ["/uploads/thai-orchid.png"],
-    "writtenBy": { "id": "yasmin", "username": "yasmin" },
+    "photoIds": [
+      "/uploads/thai-orchid.png"
+    ],
+    "writtenBy": {
+      "id": "yasmin",
+      "username": "yasmin"
+    },
     "datePosted": "2025-06-11T11:50:00.000Z",
     "photos": [
-      { "id": "/uploads/thai-orchid.png", "url": "/uploads/thai-orchid.png", "datecreated": "2025-06-11T11:50:00.000Z" }
+      {
+        "id": "/uploads/thai-orchid.png",
+        "url": "/uploads/thai-orchid.png",
+        "datecreated": "2025-06-11T11:50:00.000Z"
+      }
     ]
   },
   {
@@ -366,11 +601,20 @@
     "restaurantId": "9",
     "content": "Friendly staff and nice ambiance.",
     "rating": 5,
-    "photoIds": ["/uploads/thai-orchid.png"],
-    "writtenBy": { "id": "zara", "username": "zara" },
+    "photoIds": [
+      "/uploads/thai-orchid.png"
+    ],
+    "writtenBy": {
+      "id": "zara",
+      "username": "zara"
+    },
     "datePosted": "2025-06-11T12:50:00.000Z",
     "photos": [
-      { "id": "/uploads/thai-orchid.png", "url": "/uploads/thai-orchid.png", "datecreated": "2025-06-11T12:50:00.000Z" }
+      {
+        "id": "/uploads/thai-orchid.png",
+        "url": "/uploads/thai-orchid.png",
+        "datecreated": "2025-06-11T12:50:00.000Z"
+      }
     ]
   },
   {
@@ -378,11 +622,20 @@
     "restaurantId": "10",
     "content": "Best burgers in town!",
     "rating": 5,
-    "photoIds": ["/uploads/burger-joint.png"],
-    "writtenBy": { "id": "amy", "username": "amy" },
+    "photoIds": [
+      "/uploads/burger-joint.png"
+    ],
+    "writtenBy": {
+      "id": "amy",
+      "username": "amy"
+    },
     "datePosted": "2025-06-11T10:55:00.000Z",
     "photos": [
-      { "id": "/uploads/burger-joint.png", "url": "/uploads/burger-joint.png", "datecreated": "2025-06-11T10:55:00.000Z" }
+      {
+        "id": "/uploads/burger-joint.png",
+        "url": "/uploads/burger-joint.png",
+        "datecreated": "2025-06-11T10:55:00.000Z"
+      }
     ]
   },
   {
@@ -390,11 +643,20 @@
     "restaurantId": "10",
     "content": "Juicy patties and crispy fries.",
     "rating": 4,
-    "photoIds": ["/uploads/burger-joint.png"],
-    "writtenBy": { "id": "ben", "username": "ben" },
+    "photoIds": [
+      "/uploads/burger-joint.png"
+    ],
+    "writtenBy": {
+      "id": "ben",
+      "username": "ben"
+    },
     "datePosted": "2025-06-11T11:55:00.000Z",
     "photos": [
-      { "id": "/uploads/burger-joint.png", "url": "/uploads/burger-joint.png", "datecreated": "2025-06-11T11:55:00.000Z" }
+      {
+        "id": "/uploads/burger-joint.png",
+        "url": "/uploads/burger-joint.png",
+        "datecreated": "2025-06-11T11:55:00.000Z"
+      }
     ]
   },
   {
@@ -402,11 +664,20 @@
     "restaurantId": "10",
     "content": "Great milkshakes and quick service.",
     "rating": 5,
-    "photoIds": ["/uploads/burger-joint.png"],
-    "writtenBy": { "id": "cara", "username": "cara" },
+    "photoIds": [
+      "/uploads/burger-joint.png"
+    ],
+    "writtenBy": {
+      "id": "cara",
+      "username": "cara"
+    },
     "datePosted": "2025-06-11T12:55:00.000Z",
     "photos": [
-      { "id": "/uploads/burger-joint.png", "url": "/uploads/burger-joint.png", "datecreated": "2025-06-11T12:55:00.000Z" }
+      {
+        "id": "/uploads/burger-joint.png",
+        "url": "/uploads/burger-joint.png",
+        "datecreated": "2025-06-11T12:55:00.000Z"
+      }
     ]
   }
 ]

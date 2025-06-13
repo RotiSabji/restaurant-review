@@ -4,16 +4,30 @@ import path from "path";
 import jwt from "jsonwebtoken";
 import { createHash } from "crypto";
 
-const USERS_FILE = path.join(process.cwd(), "users.json");
-const AUTH_CODES_FILE = path.join(process.cwd(), "oidc_auth_codes.json");
+// All file storage should use /tmp for Vercel compatibility.
+const USERS_FILE = path.join("/tmp", "users.json");
+const USERS_FILE_ROOT = path.join(process.cwd(), "users.json");
+const AUTH_CODES_FILE = path.join("/tmp", "oidc_auth_codes.json");
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key";
-const JWKS_FILE = path.join(process.cwd(), "oidc_jwks.json");
+const JWKS_FILE = path.join("/tmp", "oidc_jwks.json");
 
 function base64url(input: Buffer) {
   return input.toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
 export async function POST(req: NextRequest) {
+  // Copy users.json from root to /tmp if not present
+  try {
+    await fs.access(USERS_FILE);
+  } catch {
+    try {
+      const data = await fs.readFile(USERS_FILE_ROOT, "utf-8");
+      await fs.writeFile(USERS_FILE, data);
+    } catch {
+      return NextResponse.json({ error: "server_error" }, { status: 500 });
+    }
+  }
+
   let grant_type, code, redirect_uri, client_id, code_verifier;
   const contentType = req.headers.get("content-type") || "";
   if (contentType.includes("application/json")) {
