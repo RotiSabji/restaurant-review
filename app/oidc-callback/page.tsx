@@ -1,14 +1,20 @@
 "use client";
 import { useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useAuth } from "react-oidc-context";
 
 export default function OidcCallbackPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const auth = useAuth();
+
+  console.log("OidcCallbackPage rendered", typeof window !== "undefined" ? window.location.href : "SSR");
 
   useEffect(() => {
+    console.log("OidcCallbackPage useEffect called", typeof window !== "undefined" ? window.location.href : "SSR");
     const code = searchParams.get("code");
     const state = searchParams.get("state");
+    console.log("OIDC code:", code, "state:", state);
     // You may need to retrieve code_verifier from localStorage/session if using PKCE
     const code_verifier = localStorage.getItem("oidc_code_verifier") || "";
     const client_id = process.env.NEXT_PUBLIC_OIDC_CLIENT_ID || "web-client";
@@ -50,6 +56,13 @@ export default function OidcCallbackPage() {
           router.replace("/login?error=oidc");
         });
     }
-  }, [searchParams, router]);
+  }, [searchParams, router, auth.isAuthenticated]);
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      router.replace("/");
+    }
+  }, [auth.isAuthenticated, router]);
+
   return <div className="flex justify-center items-center h-96">Processing login...</div>;
 }
