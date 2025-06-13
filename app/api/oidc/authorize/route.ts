@@ -86,19 +86,32 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   // Copy users.json from root to /tmp if not present
-  try {
-    await fs.access(USERS_FILE);
-  } catch {
+  let userFileRetries = 0;
+  while (userFileRetries < 2) {
     try {
-      const data = await fs.readFile(USERS_FILE_ROOT, "utf-8");
-      await fs.writeFile(USERS_FILE, data);
+      await fs.access(USERS_FILE);
+      break;
     } catch {
-      return htmlError("No users found", "", "", "", "", "", "");
+      try {
+        const data = await fs.readFile(USERS_FILE_ROOT, "utf-8");
+        await fs.writeFile(USERS_FILE, data);
+        break;
+      } catch {
+        userFileRetries++;
+        if (userFileRetries >= 2) {
+          return htmlError("No users found after multiple attempts. Please contact support.", "", "", "", "", "", "");
+        }
+      }
     }
   }
 
   // Parse form data
-  const form = await req.formData();
+  let form: FormData;
+  try {
+    form = await req.formData();
+  } catch (e) {
+    return htmlError("Failed to parse form data. Please try again.", "", "", "", "", "", "");
+  }
   const username = form.get("username")?.toString() || "";
   const password = form.get("password")?.toString() || "";
   const client_id = form.get("client_id")?.toString() || "";
@@ -110,42 +123,54 @@ export async function POST(req: NextRequest) {
 
   // Validate user
   let users: any[] = [];
-  try {
-    const data = await fs.readFile(USERS_FILE, "utf-8");
-    users = JSON.parse(data);
-  } catch {
-    return htmlError("No users found", client_id, redirect_uri, code_challenge, code_challenge_method, state, scope);
+  let userReadRetries = 0;
+  while (userReadRetries < 2) {
+    try {
+      const data = await fs.readFile(USERS_FILE, "utf-8");
+      users = JSON.parse(data);
+      break;
+    } catch {
+      userReadRetries++;
+      if (userReadRetries >= 2) {
+        return htmlError("No users found after multiple attempts. Please contact support.", client_id, redirect_uri, code_challenge, code_challenge_method, state, scope);
+      }
+    }
   }
   const user = users.find((u) => u.username === username);
   if (!user) {
-    return htmlError("Invalid credentials", client_id, redirect_uri, code_challenge, code_challenge_method, state, scope);
+    return htmlError("Invalid username or password. Please check your credentials and try again.", client_id, redirect_uri, code_challenge, code_challenge_method, state, scope);
   }
-  const valid = await bcrypt.compare(password, user.password);
+  let valid = false;
+  try {
+    valid = await bcrypt.compare(password, user.password);
+  } catch {
+    return htmlError("Internal error validating password. Please try again later.", client_id, redirect_uri, code_challenge, code_challenge_method, state, scope);
+  }
   if (!valid) {
-    return htmlError("Invalid credentials", client_id, redirect_uri, code_challenge, code_challenge_method, state, scope);
+    return htmlError("Invalid username or password. Please check your credentials and try again.", client_id, redirect_uri, code_challenge, code_challenge_method, state, scope);
   }
   // Generate auth code
-  const code = randomBytes(32).toString("hex");
+  let code = "";
   let codes: any[] = [];
-  try {
-    codes = JSON.parse(await fs.readFile(AUTH_CODES_FILE, "utf-8"));
-  } catch { codes = []; }
-  codes.push({ code, username, client_id, redirect_uri, code_challenge, code_challenge_method, scope, created: Date.now() });
-  await fs.writeFile(AUTH_CODES_FILE, JSON.stringify(codes, null, 2));
+  let codeWriteRetries = 0;
+  while (codeWriteRetries < 2) {
+    try {
+      code = randomBytes(32).toString("hex");
+      try {
+        codes = JSON.parse(await fs.readFile(AUTH_CODES_FILE, "utf-8"));
+      } catch { codes = []; }
+      codes.push({ code, username, client_id, redirect_uri, code_challenge, code_challenge_method, scope, created: Date.now() });
+      await fs.writeFile(AUTH_CODES_FILE, JSON.stringify(codes, null, 2));
+      break;
+    } catch {
+      codeWriteRetries++;
+      if (codeWriteRetries >= 2) {
+        return htmlError("Internal error generating authorization code. Please try again later.", client_id, redirect_uri, code_challenge, code_challenge_method, state, scope);
+      }
+    }
+  }
   // Always use response_mode=query for OIDC redirect
   // Redirect with code and state as query params (GET)
   const url = new URL(redirect_uri);
   url.searchParams.set("code", code);
-  if (state) url.searchParams.set("state", state);
-  // Always use 303 See Other to force GET
-  return NextResponse.redirect(url.toString(), 303);
-}
-
-function htmlError(errorMsg: string, client_id: string, redirect_uri: string, code_challenge: string, code_challenge_method: string, state: string, scope: string) {
-  return new NextResponse(
-    `<!DOCTYPE html>
-    <html lang="en">
-    <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Login</title><style>body { font-family: sans-serif; background: #f9fafb; display: flex; align-items: center; justify-content: center; height: 100vh; } form { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px #0001; min-width: 320px; } input, button { display: block; width: 100%; margin-bottom: 1rem; padding: 0.5rem; } .error { color: #b91c1c; margin-bottom: 1rem; }</style></head><body><form method="POST"><input type="hidden" name="client_id" value="${client_id}" /><input type="hidden" name="redirect_uri" value="${redirect_uri}" /><input type="hidden" name="code_challenge" value="${code_challenge}" /><input type="hidden" name="code_challenge_method" value="${code_challenge_method}" /><input type="hidden" name="state" value="${state}" /><input type="hidden" name="scope" value="${scope}" /><h2>Sign in</h2><div class="error">${errorMsg}</div><input name="username" type="text" placeholder="Username" required /><input name="password" type="password" placeholder="Password" required /><button type="submit">Login</button><div style="text-align:center;"><a href="/register" style="font-size:0.9em;">Sign up</a></div></form></body></html>`,
-    { status: 200, headers: { "content-type": "text/html" } }
-  );
-}
+  if
