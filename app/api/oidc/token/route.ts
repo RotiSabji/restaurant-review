@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
     sub: user.username,
     name: user.username,
     email: user.username,
-    iss: `${process.env.OIDC_BASE_URL || "http://localhost:3000"}/api/oidc`,
+    iss: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/oidc`,
     aud: client_id,
     iat: now,
     exp: now + 3600,
@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
   const access_token = jwt.sign({
     sub: user.username,
     scope: codeEntry.scope,
-    iss: `${process.env.OIDC_BASE_URL || "http://localhost:3000"}/api/oidc`,
+    iss: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/oidc`,
     aud: client_id,
     iat: now,
     exp: now + 3600,

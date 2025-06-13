@@ -11,6 +11,7 @@ export const oidcConfig = {
   authority: process.env.NEXT_PUBLIC_OIDC_AUTHORITY,
   client_id: process.env.NEXT_PUBLIC_OIDC_CLIENT_ID,
   redirect_uri: oidcRedirectUri,
+  response_mode: "query", // Ensure OIDC provider uses GET for callback
   onSigninCallback: () => {
     // Avoid page reload on successful sign-in
     window.history.replaceState({}, document.title, "/");
