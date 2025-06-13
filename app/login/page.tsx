@@ -15,6 +15,14 @@ export default function LoginPage() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") || "/";
 
+  // Prefill username and show success message if redirected from registration
+  React.useEffect(() => {
+    const success = searchParams.get("success");
+    const usernameParam = searchParams.get("username");
+    if (usernameParam) setUsername(usernameParam);
+    if (success) setError(null);
+  }, [searchParams]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -44,6 +52,11 @@ export default function LoginPage() {
       <Card>
         <CardContent className="pt-6">
           <h1 className="text-2xl font-bold mb-4">Sign in</h1>
+          {searchParams.get("success") && (
+            <div className="text-green-600 text-sm text-center mb-2">
+              Registration successful! Please log in.
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               type="text"
@@ -64,9 +77,17 @@ export default function LoginPage() {
               {loading ? "Signing in..." : "Sign in"}
             </Button>
             <div className="text-center text-sm">
-              Don't have an account? <a href="/register" className="text-blue-600 hover:underline">Sign up</a>
+              Don't have an account?{" "}
+              <a
+                href="/register"
+                className="text-blue-600 hover:underline"
+              >
+                Sign up
+              </a>
             </div>
-            {error && <div className="text-red-500 text-sm text-center">{error}</div>}
+            {error && (
+              <div className="text-red-500 text-sm text-center">{error}</div>
+            )}
           </form>
         </CardContent>
       </Card>

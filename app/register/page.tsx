@@ -10,13 +10,11 @@ export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setSuccess(false);
     try {
       const res = await fetch("/api/oidc/register", {
         method: "POST",
@@ -24,8 +22,8 @@ export default function RegisterPage() {
         body: JSON.stringify({ username, password }),
       });
       if (res.ok) {
-        setSuccess(true);
-        setTimeout(() => router.push("/"), 1500);
+        // Redirect to OIDC login with success message and prefill username
+        router.push(`/oidc/authorize?success=1&username=${encodeURIComponent(username)}`);
       } else {
         const data = await res.json();
         setError(data.message || "Registration failed");
@@ -57,7 +55,6 @@ export default function RegisterPage() {
             />
             <Button type="submit" className="w-full">Register</Button>
             {error && <div className="text-red-500 text-sm">{error}</div>}
-            {success && <div className="text-green-600 text-sm">Registration successful! Redirecting...</div>}
           </form>
         </CardContent>
       </Card>
