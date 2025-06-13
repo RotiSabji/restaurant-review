@@ -19,10 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AppAuthProvider>
-      <AppContextProvider>
-        <html lang="en">
-          <body className={inter.className}>
+    
+  
+    <html lang="en">
+      <body className={inter.className}>
+        <AppAuthProvider>
+          <AppContextProvider>
             <header className="border-b">
               <div className="max-w-[1200px] mx-auto px-4 py-4 flex justify-between items-center">
                 <Link href="/" className="text-2xl font-bold">
@@ -32,9 +34,10 @@ export default function RootLayout({
               </div>
             </header>
             {children}
-          </body>
-        </html>
-      </AppContextProvider>
-    </AppAuthProvider>
+          </AppContextProvider>
+        </AppAuthProvider>
+      </body>
+    </html>
+      
   );
 }
