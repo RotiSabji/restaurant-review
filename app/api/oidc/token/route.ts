@@ -10,6 +10,7 @@ const USERS_FILE_ROOT = path.join(process.cwd(), "users.json");
 const AUTH_CODES_FILE = path.join("/tmp", "oidc_auth_codes.json");
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key";
 const JWKS_FILE = path.join("/tmp", "oidc_jwks.json");
+const JWKS_FILE_ROOT = path.join(process.cwd(), "oidc_jwks.json");
 
 function base64url(input: Buffer) {
   return input.toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
@@ -23,6 +24,18 @@ export async function POST(req: NextRequest) {
     try {
       const data = await fs.readFile(USERS_FILE_ROOT, "utf-8");
       await fs.writeFile(USERS_FILE, data);
+    } catch {
+      return NextResponse.json({ error: "server_error" }, { status: 500 });
+    }
+  }
+
+  // Copy oidc_jwks.json from root to /tmp if not present
+  try {
+    await fs.access(JWKS_FILE);
+  } catch {
+    try {
+      const data = await fs.readFile(JWKS_FILE_ROOT, "utf-8");
+      await fs.writeFile(JWKS_FILE, data);
     } catch {
       return NextResponse.json({ error: "server_error" }, { status: 500 });
     }
