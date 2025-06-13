@@ -10,9 +10,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "react-oidc-context";
+import { useTheme } from "next-themes";
+import { Moon, Sun } from "lucide-react";
 
 export default function AuthButton() {
   const { signinRedirect, signoutRedirect, isAuthenticated, user } = useAuth();
+  const { theme, setTheme } = useTheme();
 
   // Try to get username from OIDC user profile, or fallback to localStorage token if needed
   let username = "";
