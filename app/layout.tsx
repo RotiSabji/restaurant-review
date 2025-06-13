@@ -2,11 +2,11 @@ import AuthButton from "@/components/auth-button";
 import { AppAuthProvider } from "@/providers/app-auth-provider";
 import { AppContextProvider } from "@/providers/app-context-provider";
 import { ThemeProvider } from "@/components/theme-provider";
+import DarkModeToggle from "@/components/dark-mode-toggle";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import type React from "react"; // Import React
-import DarkModeToggle from "@/components/dark-mode-toggle";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AppAuthProvider>
             <AppContextProvider>
