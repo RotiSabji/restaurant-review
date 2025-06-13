@@ -58,6 +58,9 @@ export default function RestaurantPage({ params }: { params: { id: string } }) {
   const [deleteType, setDeleteType] = useState<'restaurant' | 'review'>('restaurant');
   const [reviewToDelete, setReviewToDelete] = useState<Review | null>(null);
   
+  // Add error state
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     if (!isInitialized) return; // Wait for apiService to be initialized
     const fetchData = async () => {
@@ -79,9 +82,17 @@ export default function RestaurantPage({ params }: { params: { id: string } }) {
         );
         setRestaurantsNear(filteredNearby);
         setLoading(false);
-      } catch (error) {
-        console.error("Error fetching restaurant data:", error);
+      } catch (error: any) {
+        let message = "Error fetching restaurant data.";
+        if (error?.response?.status === 404) {
+          message = "Restaurant not found (404). It may have been deleted or the link is invalid.";
+        } else if (error?.message) {
+          message = error.message;
+        }
+        setRestaurant(null);
         setLoading(false);
+        setError(message);
+        console.error(message, error);
       }
     };
     fetchData();
@@ -209,6 +220,9 @@ export default function RestaurantPage({ params }: { params: { id: string } }) {
   // Add loading guard for initialization
   if (!isInitialized || loading) {
     return <div className="flex justify-center items-center h-96">Loading...</div>;
+  }
+  if (error) {
+    return <div className="flex flex-col items-center justify-center h-96 text-center text-red-600">{error}</div>;
   }
   if (null != restaurant) {
     return (
