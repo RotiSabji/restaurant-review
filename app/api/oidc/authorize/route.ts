@@ -18,10 +18,6 @@ export async function GET(req: NextRequest) {
   const code_challenge_method = searchParams.get("code_challenge_method") || "";
   const state = searchParams.get("state") || "";
   const scope = searchParams.get("scope") || "openid";
-  // Show success message if redirected from registration
-  const url = new URL(req.url);
-  const success = url.searchParams.get("success");
-  const prefillUsername = url.searchParams.get("username") || "";
   // Render a simple HTML login form
   return new NextResponse(
     `<!DOCTYPE html>
@@ -37,7 +33,6 @@ export async function GET(req: NextRequest) {
       <div class="bg-white rounded-2xl shadow-md">
         <div class="px-6 pt-6">
           <h1 class="text-2xl font-bold mb-4 text-center">Sign In</h1>
-          ${success ? '<div class="text-green-600 text-sm text-center mb-2">Registration successful! Please log in.</div>' : ''}
           <form method="POST" class="space-y-4">
             <!-- Hidden OAuth fields -->
             <input type="hidden" name="client_id" value="${client_id}" />
@@ -46,13 +41,13 @@ export async function GET(req: NextRequest) {
             <input type="hidden" name="code_challenge_method" value="${code_challenge_method}" />
             <input type="hidden" name="state" value="${state}" />
             <input type="hidden" name="scope" value="${scope}" />
+            
             <!-- Username -->
             <input
               type="text"
               name="username"
               placeholder="Username"
               required
-              value="${prefillUsername}"
               class="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <!-- Password -->
@@ -70,6 +65,11 @@ export async function GET(req: NextRequest) {
             >
               Login
             </button>
+
+            <!-- Optional Error/Success Messages -->
+            <!-- <div class="text-red-500 text-sm">Invalid credentials</div> -->
+            <!-- <div class="text-green-600 text-sm">Login successful!</div> -->
+
             <div class="text-center pt-1 pb-4">
               Don't have a account? <a href="/register" class="text-sm text-blue-600 hover:underline">Sign up</a>
             </div>
