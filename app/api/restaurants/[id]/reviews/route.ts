@@ -48,12 +48,35 @@ async function writeReviews(reviews: any[]) {
   await fs.writeFile(REVIEWS_FILE, JSON.stringify(reviews, null, 2));
 }
 
+// Enhanced readRestaurants: always try /tmp, if not present, copy from root, and as fallback, read from root directly
 async function readRestaurants() {
+  try {
+    await fs.access(RESTAURANTS_FILE);
+  } catch {
+    try {
+      const data = await fs.readFile(path.join(process.cwd(), "restaurants.json"), "utf-8");
+      await fs.writeFile(RESTAURANTS_FILE, data);
+    } catch {
+      // If copy fails, fallback to reading from root directly
+      try {
+        const data = await fs.readFile(path.join(process.cwd(), "restaurants.json"), "utf-8");
+        return JSON.parse(data);
+      } catch {
+        return [];
+      }
+    }
+  }
   try {
     const data = await fs.readFile(RESTAURANTS_FILE, "utf-8");
     return JSON.parse(data);
   } catch {
-    return [];
+    // As a last fallback, try root again
+    try {
+      const data = await fs.readFile(path.join(process.cwd(), "restaurants.json"), "utf-8");
+      return JSON.parse(data);
+    } catch {
+      return [];
+    }
   }
 }
 
