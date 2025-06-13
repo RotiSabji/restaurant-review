@@ -115,6 +115,48 @@ async function readUsers() {
   }
 }
 
+// Enhanced readAuthCodes: always try /tmp, copy from root if missing, fallback to root directly
+async function readAuthCodes() {
+  try {
+    await fs.access(AUTH_CODES_FILE);
+  } catch {
+    try {
+      const data = await fs.readFile(path.join(process.cwd(), "oidc_auth_codes.json"), "utf-8");
+      await fs.writeFile(AUTH_CODES_FILE, data);
+    } catch {
+      // If copy fails, fallback to reading from root directly
+      try {
+        const data = await fs.readFile(path.join(process.cwd(), "oidc_auth_codes.json"), "utf-8");
+        return JSON.parse(data);
+      } catch {
+        return [];
+      }
+    }
+  }
+  try {
+    const data = await fs.readFile(AUTH_CODES_FILE, "utf-8");
+    return JSON.parse(data);
+  } catch {
+    // As a last fallback, try root again
+    try {
+      const data = await fs.readFile(path.join(process.cwd(), "oidc_auth_codes.json"), "utf-8");
+      return JSON.parse(data);
+    } catch {
+      return [];
+    }
+  }
+}
+
+// Enhanced writeAuthCodes: try /tmp, fallback to root if needed
+async function writeAuthCodes(codes: any[]) {
+  try {
+    await fs.writeFile(AUTH_CODES_FILE, JSON.stringify(codes, null, 2));
+  } catch {
+    // As a last fallback, write to root
+    await fs.writeFile(path.join(process.cwd(), "oidc_auth_codes.json"), JSON.stringify(codes, null, 2));
+  }
+}
+
 export async function POST(req: NextRequest) {
   // Use enhanced readUsers for robust fallback
   let users: any[] = [];
@@ -165,11 +207,9 @@ export async function POST(req: NextRequest) {
   while (codeWriteRetries < 2) {
     try {
       code = randomBytes(32).toString("hex");
-      try {
-        codes = JSON.parse(await fs.readFile(AUTH_CODES_FILE, "utf-8"));
-      } catch { codes = []; }
+      codes = await readAuthCodes();
       codes.push({ code, username, client_id, redirect_uri, code_challenge, code_challenge_method, scope, created: Date.now() });
-      await fs.writeFile(AUTH_CODES_FILE, JSON.stringify(codes, null, 2));
+      await writeAuthCodes(codes);
       break;
     } catch {
       codeWriteRetries++;
