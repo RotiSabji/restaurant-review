@@ -132,11 +132,13 @@ export async function POST(req: NextRequest) {
   } catch { codes = []; }
   codes.push({ code, username, client_id, redirect_uri, code_challenge, code_challenge_method, scope, created: Date.now() });
   await fs.writeFile(AUTH_CODES_FILE, JSON.stringify(codes, null, 2));
-  // Redirect with code and state
+  // Always use response_mode=query for OIDC redirect
+  // Redirect with code and state as query params (GET)
   const url = new URL(redirect_uri);
   url.searchParams.set("code", code);
   if (state) url.searchParams.set("state", state);
-  return NextResponse.redirect(url.toString());
+  // Always use 303 See Other to force GET
+  return NextResponse.redirect(url.toString(), 303);
 }
 
 function htmlError(errorMsg: string, client_id: string, redirect_uri: string, code_challenge: string, code_challenge_method: string, state: string, scope: string) {
