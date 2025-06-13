@@ -16,6 +16,38 @@ function base64url(input: Buffer) {
   return input.toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
+// Enhanced readAuthCodes: always try /tmp, copy from root if missing, fallback to root directly
+async function readAuthCodes() {
+  try {
+    await fs.access(AUTH_CODES_FILE);
+  } catch {
+    try {
+      const data = await fs.readFile(path.join(process.cwd(), "oidc_auth_codes.json"), "utf-8");
+      await fs.writeFile(AUTH_CODES_FILE, data);
+    } catch {
+      // If copy fails, fallback to reading from root directly
+      try {
+        const data = await fs.readFile(path.join(process.cwd(), "oidc_auth_codes.json"), "utf-8");
+        return JSON.parse(data);
+      } catch {
+        return [];
+      }
+    }
+  }
+  try {
+    const data = await fs.readFile(AUTH_CODES_FILE, "utf-8");
+    return JSON.parse(data);
+  } catch {
+    // As a last fallback, try root again
+    try {
+      const data = await fs.readFile(path.join(process.cwd(), "oidc_auth_codes.json"), "utf-8");
+      return JSON.parse(data);
+    } catch {
+      return [];
+    }
+  }
+}
+
 export async function POST(req: NextRequest) {
   // Copy users.json from root to /tmp if not present
   try {
@@ -58,10 +90,7 @@ export async function POST(req: NextRequest) {
   if (grant_type !== "authorization_code" || !code || !redirect_uri || !client_id || !code_verifier) {
     return NextResponse.json({ error: "invalid_request" }, { status: 400 });
   }
-  let codes: any[] = [];
-  try {
-    codes = JSON.parse(await fs.readFile(AUTH_CODES_FILE, "utf-8"));
-  } catch { return NextResponse.json({ error: "invalid_grant" }, { status: 400 }); }
+  let codes: any[] = await readAuthCodes();
   const codeEntry = codes.find((c) => c.code === code && c.client_id === client_id && c.redirect_uri === redirect_uri);
   if (!codeEntry) {
     return NextResponse.json({ error: "invalid_grant" }, { status: 400 });
