@@ -23,7 +23,7 @@ export default function RegisterPage() {
       });
       if (res.ok) {
         // Redirect to OIDC login with success message and prefill username
-        router.push(`/oidc/authorize?success=1&username=${encodeURIComponent(username)}`);
+        router.push(`https://restaurant-review-eta.vercel.app/api/oidc/authorize?client_id=restaurant-review-app&redirect_uri=https%3A%2F%2Frestaurant-review-eta.vercel.app%2Foidc-callback&response_type=code&scope=openid&state=040e719df6e8412aad00967bf224223b&code_challenge=ufb_H4gyI10rK3l4PAcDgRp9qT-nUy4gSQQT7mLPets&code_challenge_method=S256&response_mode=query&success=1&username=${encodeURIComponent(username)}`);
       } else {
         const data = await res.json();
         setError(data.message || "Registration failed");
