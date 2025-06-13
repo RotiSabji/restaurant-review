@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
     <div class="max-w-md w-full px-4 py-12">
       <div class="bg-white rounded-2xl shadow-md">
         <div class="px-6 pt-6">
-          <h1 class="text-2xl font-bold mb-4 text-center">Sign In</h1>
+          <h1 class="text-2xl font-bold mb-4 text-center">Login</h1>
           ${success ? '<div class="text-green-600 text-sm text-center mb-2">Registration successful! Please log in.</div>' : ''}
           <form method="POST" class="space-y-4">
             <!-- Hidden OAuth fields -->
