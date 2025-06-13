@@ -84,24 +84,48 @@ export async function GET(req: NextRequest) {
   );
 }
 
-export async function POST(req: NextRequest) {
-  // Copy users.json from root to /tmp if not present
-  let userFileRetries = 0;
-  while (userFileRetries < 2) {
+// Enhanced readUsers: always try /tmp, copy from root if missing, fallback to root directly
+async function readUsers() {
+  try {
+    await fs.access(USERS_FILE);
+  } catch {
     try {
-      await fs.access(USERS_FILE);
-      break;
+      const data = await fs.readFile(USERS_FILE_ROOT, "utf-8");
+      await fs.writeFile(USERS_FILE, data);
     } catch {
+      // If copy fails, fallback to reading from root directly
       try {
         const data = await fs.readFile(USERS_FILE_ROOT, "utf-8");
-        await fs.writeFile(USERS_FILE, data);
-        break;
+        return JSON.parse(data);
       } catch {
-        userFileRetries++;
-        if (userFileRetries >= 2) {
-          return htmlError("No users found after multiple attempts. Please contact support.", "", "", "", "", "", "");
-        }
+        return [];
       }
+    }
+  }
+  try {
+    const data = await fs.readFile(USERS_FILE, "utf-8");
+    return JSON.parse(data);
+  } catch {
+    // As a last fallback, try root again
+    try {
+      const data = await fs.readFile(USERS_FILE_ROOT, "utf-8");
+      return JSON.parse(data);
+    } catch {
+      return [];
+    }
+  }
+}
+
+export async function POST(req: NextRequest) {
+  // Use enhanced readUsers for robust fallback
+  let users: any[] = [];
+  let userFileRetries = 0;
+  while (userFileRetries < 2) {
+    users = await readUsers();
+    if (users.length > 0) break;
+    userFileRetries++;
+    if (userFileRetries >= 2) {
+      return htmlError("No users found after multiple attempts. Please contact support.", "", "", "", "", "", "");
     }
   }
 
@@ -122,20 +146,6 @@ export async function POST(req: NextRequest) {
   const scope = form.get("scope")?.toString() || "openid";
 
   // Validate user
-  let users: any[] = [];
-  let userReadRetries = 0;
-  while (userReadRetries < 2) {
-    try {
-      const data = await fs.readFile(USERS_FILE, "utf-8");
-      users = JSON.parse(data);
-      break;
-    } catch {
-      userReadRetries++;
-      if (userReadRetries >= 2) {
-        return htmlError("No users found after multiple attempts. Please contact support.", client_id, redirect_uri, code_challenge, code_challenge_method, state, scope);
-      }
-    }
-  }
   const user = users.find((u) => u.username === username);
   if (!user) {
     return htmlError("Invalid username or password. Please check your credentials and try again.", client_id, redirect_uri, code_challenge, code_challenge_method, state, scope);

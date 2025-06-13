@@ -11,38 +11,40 @@ const RESTAURANTS_FILE = path.join("/tmp", "restaurants.json");
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key";
 const JWKS_FILE = path.join("/tmp", "oidc_jwks.json");
 
+// Enhanced readReviews: always try /tmp, copy from root if missing, fallback to root directly
 async function readReviews() {
-  // Copy reviews.json from root to /tmp if not present
   try {
     await fs.access(REVIEWS_FILE);
   } catch {
     try {
       const data = await fs.readFile(REVIEWS_FILE_ROOT, "utf-8");
       await fs.writeFile(REVIEWS_FILE, data);
-    } catch (e) {
-      return [];
+    } catch {
+      // If copy fails, fallback to reading from root directly
+      try {
+        const data = await fs.readFile(REVIEWS_FILE_ROOT, "utf-8");
+        return JSON.parse(data);
+      } catch {
+        return [];
+      }
     }
   }
   try {
     const data = await fs.readFile(REVIEWS_FILE, "utf-8");
     return JSON.parse(data);
   } catch {
-    return [];
+    // As a last fallback, try root again
+    try {
+      const data = await fs.readFile(REVIEWS_FILE_ROOT, "utf-8");
+      return JSON.parse(data);
+    } catch {
+      return [];
+    }
   }
 }
 
+// writeReviews: always use /tmp for both read and write
 async function writeReviews(reviews: any[]) {
-  // Copy reviews.json from root to /tmp if not present
-  try {
-    await fs.access(REVIEWS_FILE);
-  } catch {
-    try {
-      const data = await fs.readFile(REVIEWS_FILE_ROOT, "utf-8");
-      await fs.writeFile(REVIEWS_FILE, data);
-    } catch (e) {
-      // If root is missing, just continue to write
-    }
-  }
   await fs.writeFile(REVIEWS_FILE, JSON.stringify(reviews, null, 2));
 }
 
