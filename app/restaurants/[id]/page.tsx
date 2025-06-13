@@ -74,15 +74,10 @@ export default function RestaurantPage({ params }: { params: { id: string } }) {
           radius: 20,
         });
         // Filter out the current restaurant from the nearby list
-const filteredNearby = restaurantsNearBy.content.filter(
-  (r: RestaurantSummary) => r.id !== restaurant.id
-);
-
+        const filteredNearby = restaurantsNearBy.content.filter(
+          (r: RestaurantSummary) => r.id !== restaurant.id
+        );
         setRestaurantsNear(filteredNearby);
-
-        if (restaurant.reviews) {
-          setReviews(restaurant.reviews);
-        }
         setLoading(false);
       } catch (error) {
         console.error("Error fetching restaurant data:", error);
@@ -92,11 +87,12 @@ const filteredNearby = restaurantsNearBy.content.filter(
     fetchData();
   }, [params.id, apiService, isInitialized]);
 
+  // Always fetch reviews from the API, not from restaurant object
   useEffect(() => {
-    if (!isInitialized) return; // Wait for apiService to be initialized
+    if (!isInitialized) return;
     const fetchReviews = async () => {
       try {
-        if (apiService && restaurant) {
+        if (apiService) {
           const reviewsResponse = await apiService.getRestaurantReviews(
             params.id,
             sortOrder,
@@ -104,22 +100,16 @@ const filteredNearby = restaurantsNearBy.content.filter(
           if (reviewsResponse && Array.isArray(reviewsResponse.content)) {
             setReviews(reviewsResponse.content);
           } else {
-            console.error(
-              "Unexpected reviews response format:",
-              reviewsResponse,
-            );
-            setReviews(restaurant.reviews || []);
+            setReviews([]);
           }
         }
       } catch (error) {
         console.error("Error fetching reviews:", error);
-        if (restaurant?.reviews) {
-          setReviews(restaurant.reviews);
-        }
+        setReviews([]);
       }
     };
     fetchReviews();
-  }, [apiService, restaurant, params.id, sortOrder, isInitialized]);
+  }, [apiService, params.id, sortOrder, isInitialized]);
 
   const getImageUrl = (restaurant: Restaurant) => {
     if (
