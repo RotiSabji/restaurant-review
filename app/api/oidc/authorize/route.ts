@@ -173,4 +173,48 @@ export async function POST(req: NextRequest) {
   // Redirect with code and state as query params (GET)
   const url = new URL(redirect_uri);
   url.searchParams.set("code", code);
-  if
+  if (state) url.searchParams.set("state", state);
+  // Always use 303 See Other to force GET
+  return NextResponse.redirect(url.toString(), 303);
+}
+
+function htmlError(
+  error: string,
+  client_id: string,
+  redirect_uri: string,
+  code_challenge: string,
+  code_challenge_method: string,
+  state: string,
+  scope: string
+) {
+  // Render a simple HTML error page
+  return new NextResponse(
+    `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  </head>
+  <body class="bg-gray-50 flex items-center justify-center min-h-screen">
+    <div class="max-w-md w-full px-4 py-12">
+      <div class="bg-white rounded-2xl shadow-md">
+        <div class="px-6 pt-6">
+          <h1 class="text-2xl font-bold mb-4 text-center">Error</h1>
+          <p class="text-red-500 text-sm mb-4 text-center">${error}</p>
+          <a
+            href="${redirect_uri}?error=${encodeURIComponent(error)}&client_id=${encodeURIComponent(client_id)}&redirect_uri=${encodeURIComponent(redirect_uri)}&code_challenge=${encodeURIComponent(code_challenge)}&code_challenge_method=${encodeURIComponent(code_challenge_method)}&state=${encodeURIComponent(state)}&scope=${encodeURIComponent(scope)}"
+            class="w-full bg-black hover:bg-black text-white font-semibold py-2 px-4 rounded-md transition block text-center"
+          >
+            Back to Login
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+`,
+    { status: 200, headers: { "content-type": "text/html" } }
+  );
+}
