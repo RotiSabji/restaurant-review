@@ -2,14 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import jwt from "jsonwebtoken";
+import { getJwks } from "@/lib/redis";
 
-// All file storage should use /tmp for Vercel compatibility.
 const REVIEWS_FILE = path.join("/tmp", "reviews.json");
 const REVIEWS_FILE_ROOT = path.join(process.cwd(), "reviews.json");
-const JWKS_FILE = path.join("/tmp", "oidc_jwks.json");
+const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key";
 
 async function readReviews() {
-  // Copy reviews.json from root to /tmp if not present
   try {
     await fs.access(REVIEWS_FILE);
   } catch {
@@ -29,18 +28,13 @@ async function readReviews() {
 }
 
 async function writeReviews(reviews: any[]) {
-  // Copy reviews.json from root to /tmp if not present
   try {
-    await fs.access(REVIEWS_FILE);
+    await fs.writeFile(REVIEWS_FILE, JSON.stringify(reviews, null, 2));
   } catch {
     try {
-      const data = await fs.readFile(REVIEWS_FILE_ROOT, "utf-8");
-      await fs.writeFile(REVIEWS_FILE, data);
-    } catch (e) {
-      // If root is missing, just continue to write
-    }
+      await fs.writeFile(REVIEWS_FILE_ROOT, JSON.stringify(reviews, null, 2));
+    } catch {}
   }
-  await fs.writeFile(REVIEWS_FILE, JSON.stringify(reviews, null, 2));
 }
 
 export async function GET(_req: NextRequest, { params }: { params: { id: string; reviewId: string } }) {
@@ -53,27 +47,18 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string;
 }
 
 export async function PUT(req: NextRequest, { params }: { params: { id: string; reviewId: string } }) {
-  // Extract JWT from Authorization header
   const authHeader = req.headers.get("authorization");
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return NextResponse.json({ message: "Missing or invalid Authorization header" }, { status: 401 });
   }
   const token = authHeader.replace("Bearer ", "");
-  // Load public key for verification
-  let jwks;
-  let publicKey;
+
+  const jwks = await getJwks();
+  const publicKey = jwks.publicKeyPem;
+
+  let decoded: any;
   try {
-    jwks = JSON.parse(await fs.readFile(JWKS_FILE, "utf-8"));
-    publicKey = jwks.publicKeyPem;
-    if (!publicKey) {
-      return NextResponse.json({ message: "Server error: JWKS missing publicKeyPem" }, { status: 500 });
-    }
-  } catch {
-    return NextResponse.json({ message: "Server error: JWKS not found" }, { status: 500 });
-  }
-  let decoded;
-  try {
-    decoded = jwt.verify(token, publicKey, { algorithms: ["RS256"] });
+    decoded = jwt.verify(token, publicKey || JWT_SECRET, { algorithms: ["RS256", "HS256"] });
   } catch {
     return NextResponse.json({ message: "Invalid or expired token" }, { status: 401 });
   }
@@ -86,7 +71,6 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string; 
   if (idx === -1) {
     return NextResponse.json({ message: "Review not found" }, { status: 404 });
   }
-  // Only allow the user who wrote the review to update it
   if (!reviews[idx].writtenBy || reviews[idx].writtenBy.id !== username) {
     return NextResponse.json({ message: "You are not allowed to edit this review" }, { status: 403 });
   }

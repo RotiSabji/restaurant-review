@@ -3,15 +3,13 @@ import { promises as fs } from "fs";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
+import { getJwks } from "@/lib/redis";
 
-// All file storage should use /tmp for Vercel compatibility.
 const REVIEWS_FILE = path.join("/tmp", "reviews.json");
 const REVIEWS_FILE_ROOT = path.join(process.cwd(), "reviews.json");
 const RESTAURANTS_FILE = path.join("/tmp", "restaurants.json");
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key";
-const JWKS_FILE = path.join("/tmp", "oidc_jwks.json");
 
-// Enhanced readReviews: always try /tmp, copy from root if missing, fallback to root directly
 async function readReviews() {
   try {
     await fs.access(REVIEWS_FILE);
@@ -20,7 +18,6 @@ async function readReviews() {
       const data = await fs.readFile(REVIEWS_FILE_ROOT, "utf-8");
       await fs.writeFile(REVIEWS_FILE, data);
     } catch {
-      // If copy fails, fallback to reading from root directly
       try {
         const data = await fs.readFile(REVIEWS_FILE_ROOT, "utf-8");
         return JSON.parse(data);
@@ -33,7 +30,6 @@ async function readReviews() {
     const data = await fs.readFile(REVIEWS_FILE, "utf-8");
     return JSON.parse(data);
   } catch {
-    // As a last fallback, try root again
     try {
       const data = await fs.readFile(REVIEWS_FILE_ROOT, "utf-8");
       return JSON.parse(data);
@@ -43,12 +39,16 @@ async function readReviews() {
   }
 }
 
-// writeReviews: always use /tmp for both read and write
 async function writeReviews(reviews: any[]) {
-  await fs.writeFile(REVIEWS_FILE, JSON.stringify(reviews, null, 2));
+  try {
+    await fs.writeFile(REVIEWS_FILE, JSON.stringify(reviews, null, 2));
+  } catch {
+    try {
+      await fs.writeFile(REVIEWS_FILE_ROOT, JSON.stringify(reviews, null, 2));
+    } catch {}
+  }
 }
 
-// Enhanced readRestaurants: always try /tmp, if not present, copy from root, and as fallback, read from root directly
 async function readRestaurants() {
   try {
     await fs.access(RESTAURANTS_FILE);
@@ -57,7 +57,6 @@ async function readRestaurants() {
       const data = await fs.readFile(path.join(process.cwd(), "restaurants.json"), "utf-8");
       await fs.writeFile(RESTAURANTS_FILE, data);
     } catch {
-      // If copy fails, fallback to reading from root directly
       try {
         const data = await fs.readFile(path.join(process.cwd(), "restaurants.json"), "utf-8");
         return JSON.parse(data);
@@ -70,7 +69,6 @@ async function readRestaurants() {
     const data = await fs.readFile(RESTAURANTS_FILE, "utf-8");
     return JSON.parse(data);
   } catch {
-    // As a last fallback, try root again
     try {
       const data = await fs.readFile(path.join(process.cwd(), "restaurants.json"), "utf-8");
       return JSON.parse(data);
@@ -81,7 +79,13 @@ async function readRestaurants() {
 }
 
 async function writeRestaurants(restaurants: any[]) {
-  await fs.writeFile(RESTAURANTS_FILE, JSON.stringify(restaurants, null, 2));
+  try {
+    await fs.writeFile(RESTAURANTS_FILE, JSON.stringify(restaurants, null, 2));
+  } catch {
+    try {
+      await fs.writeFile(path.join(process.cwd(), "restaurants.json"), JSON.stringify(restaurants, null, 2));
+    } catch {}
+  }
 }
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
@@ -101,7 +105,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   const page = Number(searchParams.get("page")) || 0;
   const size = Number(searchParams.get("size")) || 10;
   const totalElements = reviews.length;
-  const totalPages = Math.ceil(totalElements / size);
+  const totalPages = Math.ceil(totalElements / size) || 1;
   const paged = reviews.slice(page * size, (page + 1) * size);
   return NextResponse.json({
     content: paged,
@@ -118,31 +122,22 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
-  // Extract JWT from Authorization header
   const authHeader = req.headers.get("authorization");
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return NextResponse.json({ message: "Missing or invalid Authorization header" }, { status: 401 });
   }
   const token = authHeader.replace("Bearer ", "");
-  // Load public key for verification
-  let jwks;
-  let publicKey;
+
+  const jwks = await getJwks();
+  const publicKey = jwks.publicKeyPem;
+
+  let decoded: any;
   try {
-    jwks = JSON.parse(await fs.readFile(JWKS_FILE, "utf-8"));
-    publicKey = jwks.publicKeyPem;
-    if (!publicKey) {
-      return NextResponse.json({ message: "Server error: JWKS missing publicKeyPem" }, { status: 500 });
-    }
-  } catch {
-    return NextResponse.json({ message: "Server error: JWKS not found" }, { status: 500 });
-  }
-  let decoded;
-  try {
-    decoded = jwt.verify(token, publicKey || JWT_SECRET, { algorithms: ["RS256"] });
+    decoded = jwt.verify(token, publicKey || JWT_SECRET, { algorithms: ["RS256", "HS256"] });
   } catch {
     return NextResponse.json({ message: "Invalid or expired token" }, { status: 401 });
   }
-  // Username is in sub claim
+
   const username = decoded.sub;
   if (!username) {
     return NextResponse.json({ message: "Token missing sub (username) claim" }, { status: 401 });
@@ -155,26 +150,24 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     return NextResponse.json({ message: "Restaurant not found" }, { status: 404 });
   }
   const id = uuidv4();
-  // Set writtenBy from JWT
   const writtenBy = { id: username, username };
   const review = {
     id,
     restaurantId: params.id,
     ...data,
-    writtenBy, // always include UserSummary from JWT
+    writtenBy,
     datePosted: new Date().toISOString(),
-    photos:data.photoIds.map((photoId: string) => ({
+    photos: (data.photoIds || []).map((photoId: string) => ({
       id: photoId,
       url: `${photoId}`,
       datecreated: new Date().toISOString()
-  })),
+    })),
   };
   reviews.push(review);
   await writeReviews(reviews);
-  // Update restaurant's reviews, averageRating, totalReviews
+
   restaurant.reviews = (restaurant.reviews || []).concat([review.id]);
   restaurant.totalReviews = (restaurant.totalReviews || 0) + 1;
-  // Recalculate averageRating
   const restaurantReviews = reviews.filter((r: any) => r.restaurantId === params.id);
   restaurant.averageRating = restaurantReviews.reduce((sum: number, r: any) => sum + (r.rating || 0), 0) / restaurantReviews.length;
   await writeRestaurants(restaurants);

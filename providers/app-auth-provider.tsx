@@ -1,22 +1,29 @@
 "use client";
 
-import { AuthProvider } from "react-oidc-context";
+import { AuthProvider, AuthProviderProps } from "react-oidc-context";
 import { PropsWithChildren } from "react";
 import { WebStorageStateStore } from "oidc-client-ts";
 
-// OIDC Config
-// Use frontend route for redirect_uri, not API route
-const oidcRedirectUri = `${process.env.NEXT_PUBLIC_BASE_URL}/oidc-callback`;
-export const oidcConfig = {
-  authority: process.env.NEXT_PUBLIC_OIDC_AUTHORITY,
-  client_id: process.env.NEXT_PUBLIC_OIDC_CLIENT_ID,
-  redirect_uri: oidcRedirectUri,
-  response_mode: "query", // Ensure OIDC provider uses GET for callback
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+const authority = process.env.NEXT_PUBLIC_OIDC_AUTHORITY || `${baseUrl}/api/oidc`;
+const client_id = process.env.NEXT_PUBLIC_OIDC_CLIENT_ID || "web-client";
+const redirect_uri = `${baseUrl}/oidc-callback`;
+
+export const oidcConfig: AuthProviderProps = {
+  authority,
+  client_id,
+  redirect_uri,
+  response_type: "code",
+  response_mode: "query",
   onSigninCallback: () => {
-    // Avoid page reload on successful sign-in
-    window.history.replaceState({}, document.title, "/");
+    if (typeof window !== "undefined") {
+      window.history.replaceState({}, document.title, "/");
+    }
   },
-  userStore: typeof window !== "undefined" ? new WebStorageStateStore({ store: window.localStorage }) : undefined,
+  userStore:
+    typeof window !== "undefined"
+      ? new WebStorageStateStore({ store: window.localStorage })
+      : undefined,
 };
 
 export function AppAuthProvider({ children }: PropsWithChildren) {

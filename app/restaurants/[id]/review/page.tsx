@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Star, Upload } from "lucide-react";
@@ -17,11 +17,7 @@ import {
 import { useAppContext } from "@/providers/app-context-provider";
 import { Photo } from "@/domain/domain";
 
-export default function WriteReviewPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+function ReviewFormContent({ params }: { params: { id: string } }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const reviewId = searchParams.get("reviewId");
@@ -40,11 +36,11 @@ export default function WriteReviewPage({
 
   useEffect(() => {
     const fetchReviewData = async () => {
-      if (isEditing && apiService) {
+      if (isEditing && apiService && reviewId) {
         try {
           const review = await apiService.getRestaurantReview(
             params.id,
-            reviewId,
+            reviewId
           );
 
           if (review) {
@@ -53,7 +49,7 @@ export default function WriteReviewPage({
             if (review.photos) {
               setExistingPhotos(review.photos);
               setPreviews(
-                review.photos.map((photo) => `/api/photos/${photo.url}`),
+                review.photos.map((photo) => `/api/photos/${photo.url}`)
               );
             }
           }
@@ -70,16 +66,14 @@ export default function WriteReviewPage({
     if (!apiService) {
       throw Error("API Service not available!");
     }
-    // Upload the photo and return the URL which is used as the ID
     const response = await apiService.uploadPhoto(file, caption);
-    return response.url; // Return just the URL string which serves as the ID
+    return response.url;
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     setImages((prev) => [...prev, ...files]);
 
-    // Create preview URLs for the images
     const newPreviews = files.map((file) => URL.createObjectURL(file));
     setPreviews((prev) => [...prev, ...newPreviews]);
   };
@@ -91,12 +85,10 @@ export default function WriteReviewPage({
     }
     try {
       setIsSubmitting(true);
-      // Upload all new images and get the URLs directly (which serve as IDs)
       const newPhotoIds = await Promise.all(
         images.map((file) => uploadPhoto(file))
       );
-      
-      // Get IDs from existing photos (which are URLs)
+
       const existingPhotoIds = existingPhotos.map((photo) => photo.url);
       const allPhotoIds = [...existingPhotoIds, ...newPhotoIds];
 
@@ -106,12 +98,11 @@ export default function WriteReviewPage({
         photoIds: allPhotoIds,
       };
 
-      if (isEditing) {
+      if (isEditing && reviewId) {
         await apiService.updateReview(params.id, reviewId, reviewData);
       } else {
         await apiService.createReview(params.id, reviewData);
       }
-      // Instead of immediate redirect, set pendingRedirect
       setPendingRedirect(`/restaurants/${params.id}`);
     } catch (error) {
       console.error("Error submitting review:", error);
@@ -130,11 +121,9 @@ export default function WriteReviewPage({
 
   const removePhoto = (index: number) => {
     if (index < existingPhotos.length) {
-      // Remove an existing photo
       setExistingPhotos((current) => current.filter((_, i) => i !== index));
       setPreviews((current) => current.filter((_, i) => i !== index));
     } else {
-      // Remove a newly added photo
       const adjustedIndex = index - existingPhotos.length;
       setImages((current) => current.filter((_, i) => i !== adjustedIndex));
       setPreviews((current) => current.filter((_, i) => i !== index));
@@ -237,21 +226,32 @@ export default function WriteReviewPage({
               >
                 Cancel
               </Button>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={!rating || !content || isSubmitting}
               >
-                {isSubmitting 
-                  ? "Uploading..." 
-                  : isEditing 
-                    ? "Update Review" 
-                    : "Submit Review"
-                }
+                {isSubmitting
+                  ? "Uploading..."
+                  : isEditing
+                    ? "Update Review"
+                    : "Submit Review"}
               </Button>
             </div>
           </form>
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function WriteReviewPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  return (
+    <Suspense fallback={<div className="text-center p-8">Loading review form...</div>}>
+      <ReviewFormContent params={params} />
+    </Suspense>
   );
 }

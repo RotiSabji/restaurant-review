@@ -20,18 +20,16 @@ export function AppContextProvider({
   const [apiService, setApiService] = useState<ApiService | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
   const auth = useAuth();
-  const isLoading = auth.isLoading;
+  const isLoading = auth ? auth.isLoading : false;
 
   useEffect(() => {
     if (typeof window === "undefined") {
       return;
     }
-    if (isLoading) return; // Wait for OIDC to finish loading
+    if (isLoading) return;
+
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-      if (!baseUrl) {
-        throw Error("Base URL not defined!");
-      }
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || `${window.location.origin}/api`;
 
       // Create new api service instance when auth changes
       const axiosApiService = new AxiosApiService(baseUrl, auth);
@@ -40,7 +38,7 @@ export function AppContextProvider({
     } catch (error) {
       console.error("Failed to initialize services:", error);
     }
-  }, [auth, isLoading]); // Add isLoading as a dependency
+  }, [auth, isLoading]);
 
   if (isLoading) {
     return <div className="flex justify-center items-center h-96">Loading authentication...</div>;

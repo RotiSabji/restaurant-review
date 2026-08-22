@@ -1,26 +1,51 @@
 "use client";
-import { useEffect } from "react";
+import React, { useEffect, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useAuth } from "react-oidc-context";
 
-export default function OidcCallbackPage() {
+function CallbackContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const auth = useAuth();
-
-  console.log("OidcCallbackPage rendered", typeof window !== "undefined" ? window.location.href : "SSR");
+  const processedRef = useRef(false);
 
   useEffect(() => {
-    console.log("OidcCallbackPage useEffect called", typeof window !== "undefined" ? window.location.href : "SSR");
+    if (processedRef.current) return;
+    processedRef.current = true;
+
     const code = searchParams.get("code");
     const state = searchParams.get("state");
-    console.log("OIDC code:", code, "state:", state);
-    // You may need to retrieve code_verifier from localStorage/session if using PKCE
-    const code_verifier = localStorage.getItem("oidc_code_verifier") || "";
-    const client_id = process.env.NEXT_PUBLIC_OIDC_CLIENT_ID || "web-client";
-    const redirect_uri = window.location.origin + "/oidc-callback";
-    if (code) {
-      fetch("/api/oidc/token", {
+
+    if (auth.isAuthenticated) {
+      router.replace("/");
+      return;
+    }
+
+    if (auth.signinCallback) {
+      auth
+        .signinCallback()
+        .then(() => {
+          window.location.replace("/");
+        })
+        .catch(async (err) => {
+          console.warn("auth.signinCallback error, attempting fallback token fetch:", err);
+          if (code) {
+            await manualTokenExchange(code, state);
+          } else {
+            router.replace("/login?error=oidc");
+          }
+        });
+    } else if (code) {
+      manualTokenExchange(code, state);
+    }
+  }, [searchParams, router, auth]);
+
+  const manualTokenExchange = async (code: string, state: string | null) => {
+    try {
+      const client_id = process.env.NEXT_PUBLIC_OIDC_CLIENT_ID || "web-client";
+      const redirect_uri = window.location.origin + "/oidc-callback";
+
+      const res = await fetch("/api/oidc/token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -28,41 +53,38 @@ export default function OidcCallbackPage() {
           code,
           redirect_uri,
           client_id,
-          code_verifier,
         }),
-      })
-        .then(async (res) => {
-          if (!res.ok) {
-            let err;
-            try {
-              err = await res.json();
-            } catch {
-              err = { error: "OIDC token exchange failed" };
-            }
-            alert("OIDC Error: " + JSON.stringify(err));
-            throw new Error("OIDC token exchange failed");
-          }
-          return res.json();
-        })
-        .then((data) => {
-          // Store tokens in localStorage
-          localStorage.setItem("access_token", data.access_token);
-          localStorage.setItem("id_token", data.id_token);
-          // Optionally store refresh_token, expires_in, etc.
-          window.location.replace("/");
-        })
-        .catch(() => {
-          // Optionally show error UI
-          router.replace("/login?error=oidc");
-        });
-    }
-  }, [searchParams, router, auth.isAuthenticated]);
+      });
 
-  useEffect(() => {
-    if (auth.isAuthenticated) {
-      router.replace("/");
-    }
-  }, [auth.isAuthenticated, router]);
+      if (!res.ok) {
+        throw new Error("Token exchange failed");
+      }
 
-  return <div className="flex justify-center items-center h-96">Processing login...</div>;
+      const data = await res.json();
+      if (typeof window !== "undefined") {
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("id_token", data.id_token);
+        localStorage.setItem("token", data.access_token);
+      }
+      window.location.replace("/");
+    } catch (err) {
+      console.error("Manual token exchange failed:", err);
+      router.replace("/login?error=oidc");
+    }
+  };
+
+  return (
+    <div className="flex flex-col justify-center items-center h-96 space-y-4">
+      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+      <p className="text-muted-foreground text-sm font-medium">Authenticating via OIDC...</p>
+    </div>
+  );
+}
+
+export default function OidcCallbackPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center h-96">Loading...</div>}>
+      <CallbackContent />
+    </Suspense>
+  );
 }
