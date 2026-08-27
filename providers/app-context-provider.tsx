@@ -41,7 +41,7 @@ export function AppContextProvider({
   }, [auth, isLoading]);
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-96">Loading authentication...</div>;
+    return <div className="flex justify-center items-center h-96">Loading ...</div>;
   }
 
   return (
